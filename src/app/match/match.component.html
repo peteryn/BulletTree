@@ -1,0 +1,34 @@
+<table>
+	<tr>
+		<td class="team" [class.winner]="team1Score > team2Score">
+			{{ team1 }}
+		</td>
+		<td class="score">
+			<input
+				type="text"
+				name="team1Score"
+				id=""
+				value="{{ team1Score }}"
+				(change)="update(team1ScoreInput.value, team2ScoreInput.value)"
+				#team1ScoreInput
+				[class.winner]="team1Score > team2Score"
+			/>
+		</td>
+	</tr>
+	<tr>
+		<td class="team" [class.winner]="team1Score < team2Score">
+			{{ team2 }}
+		</td>
+		<td class="score">
+			<input
+				type="text"
+				name="team2Score"
+				id=""
+				value="{{ team2Score }}"
+				(change)="update(team1ScoreInput.value, team2ScoreInput.value)"
+				#team2ScoreInput
+				[class.winner]="team1Score < team2Score"
+			/>
+		</td>
+	</tr>
+</table>
