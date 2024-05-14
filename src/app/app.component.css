@@ -1,6 +1,15 @@
 main {
-    display: flex;
-    justify-content: center;
-    color: #e5e9f0;
-    margin-top: 3em;
+	display: grid;
+	color: #e5e9f0;
+	margin-top: 3em;
+
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 1em;
 }

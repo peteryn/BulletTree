@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-match',
@@ -11,8 +11,10 @@ export class MatchComponent {
 	@Input() team1: string = '';
 	@Input() team2: string = '';
 
-	team1Score: number = 0;
-	team2Score: number = 0;
+	@Input() team1Score: number = 0;
+	@Input() team2Score: number = 0;
+
+	@Output() winnerEvent = new EventEmitter<string>();
 
 	update(t1Score: string, t2Score: string) {
 		this.team1Score = parseInt(t1Score);
@@ -20,10 +22,13 @@ export class MatchComponent {
 		console.log(`${this.team1Score} : ${this.team2Score}`);
 		if (this.team1Score > this.team2Score) {
 			console.log(`${this.team1} is winning`);
+			this.winnerEvent.emit(this.team1);
 		} else if (this.team1Score < this.team2Score) {
 			console.log(`${this.team2} is winning`);
+			this.winnerEvent.emit(this.team2);
 		} else {
 			console.log('The series is tied');
+			this.winnerEvent.emit('');
 		}
 	}
 }

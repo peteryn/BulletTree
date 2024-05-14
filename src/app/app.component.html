@@ -1,9 +1,36 @@
 <app-navbar></app-navbar>
 
 <main>
-	<!-- <app-match [team1]="teams[0]" [team2]="teams[1]"></app-match>
-	<app-match [team1]="teams[2]" [team2]="teams[3]"></app-match> -->
-	<ng-container *ngFor="let match of matchups">
-		<app-match [team1]="match.team1" [team2]="match.team2"></app-match>
-	</ng-container>
+	<section id="quarterfinals">
+		<ng-container *ngFor="let match of quarterFinals">
+			<app-match
+				[team1]="match.team1"
+				[team2]="match.team2"
+				[team1Score]="match.team1Score"
+				[team2Score]="match.team2Score"
+				(winnerEvent)="updateSemiFinals($event)"
+			></app-match>
+		</ng-container>
+	</section>
+	<section>
+		<ng-container *ngFor="let match of semiFinals">
+			<app-match
+				[team1]="match.team1"
+				[team2]="match.team2"
+				[team1Score]="match.team1Score"
+				[team2Score]="match.team2Score"
+				(winnerEvent)="updateGrandFinals($event)"
+			></app-match>
+		</ng-container>
+	</section>
+	<section>
+		<ng-container *ngFor="let match of grandFinals">
+			<app-match
+				[team1]="match.team1"
+				[team2]="match.team2"
+				[team1Score]="match.team1Score"
+				[team2Score]="match.team2Score"
+			></app-match>
+		</ng-container>
+	</section>
 </main>

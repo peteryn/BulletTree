@@ -29,14 +29,41 @@ export class AppComponent {
 		'Shopify Rebellion',
 	];
 
-	matchups: Match[] = [];
+	semiFinalTeams: string[] = [];
+	grandFinalTeams: string[] = [];
+
+	quarterFinals: Match[] = [];
+	semiFinals: Match[] = [];
+	grandFinals: Match[] = [];
 
 	constructor() {
-		for (let i = 0; i < this.teams.length; i += 2) {
-			this.matchups.push({
-				team1: this.teams[i],
-				team2: this.teams[i + 1],
+		this.createMatches(this.teams, this.quarterFinals);
+	}
+
+	createMatches(teams: string[], matches: Match[]) {
+		for (let i = 0; i < teams.length; i += 2) {
+			matches.push({
+				team1: teams[i],
+				team2: teams[i + 1],
+				team1Score: 0,
+				team2Score: 0,
 			});
+		}
+	}
+
+	updateSemiFinals(winner: string) {
+		// TODO: remove winner, if the winner changes
+		this.semiFinalTeams.push(winner);
+
+		if (this.semiFinalTeams.length === 4) {
+			this.createMatches(this.semiFinalTeams, this.semiFinals);
+		}
+	}
+
+	updateGrandFinals(winner: string) {
+		this.grandFinalTeams.push(winner);
+		if (this.grandFinalTeams.length === 2) {
+			this.createMatches(this.grandFinalTeams, this.grandFinals);
 		}
 	}
 }
