@@ -12,25 +12,37 @@ import { TreeNode } from '../tree-node';
 	styleUrl: './single-elimination-bracket.component.css',
 })
 export class SingleEliminationBracketComponent {
-	quarterFinals: Match[] = [];
-	semiFinals: Match[] = [];
-	grandFinals: Match[] = [];
+	quarterFinals: TreeNode[] = [];
+	semiFinals: TreeNode[] = [];
+	grandFinals: TreeNode[] = [];
+
 	semiFinalTeams: string[] = [];
 	grandFinalTeams: string[] = [];
 
 	teams = [
-		'Spacestation',
-		'Dignitas',
-		'Gen.G Mobil1 Racing',
-		'OG',
-		'M80',
-		'Cloud9',
-		'G2 Stride',
-		'Shopify Rebellion',
+		// 'Spacestation',
+		// 'Dignitas',
+		// 'Gen.G Mobil1 Racing',
+		// 'OG',
+		// 'M80',
+		// 'Cloud9',
+		// 'G2 Stride',
+		// 'Shopify Rebellion',
+		'Celtics',
+		'Heat',
+		'Cavaliers',
+		'Magic',
+		'Bucks',
+		'Pacers',
+		'Knicks',
+		'76ers',
 	];
 
 	constructor() {
-		this.createMatches(this.teams, this.quarterFinals);
+		// this.createMatches(this.teams, this.quarterFinals);
+		const grandFinal = this.createPlayoffBracket(this.teams);
+		console.log(grandFinal);
+		console.log(this.quarterFinals);
 	}
 
 	createMatches(teams: string[], matches: Match[]) {
@@ -49,14 +61,32 @@ export class SingleEliminationBracketComponent {
 		this.semiFinalTeams.push(winner);
 
 		if (this.semiFinalTeams.length === 4) {
-			this.createMatches(this.semiFinalTeams, this.semiFinals);
+			// this.createMatches(this.semiFinalTeams, this.semiFinals);
 		}
 	}
 
 	updateGrandFinals(winner: string) {
 		this.grandFinalTeams.push(winner);
 		if (this.grandFinalTeams.length === 2) {
-			this.createMatches(this.grandFinalTeams, this.grandFinals);
+			// this.createMatches(this.grandFinalTeams, this.grandFinals);
+		}
+	}
+
+	update(node: TreeNode) {
+		if (node.match.team1Score > node.match.team2Score) {
+			this.updateParent(node, node.match.team1);
+		} else if (node.match.team1Score < node.match.team2Score) {
+			this.updateParent(node, node.match.team2);
+		} else {
+			this.updateParent(node, '');
+		}
+	}
+
+	updateParent(node: TreeNode, team: string) {
+		if (node.onParentLeft) {
+			node.parent!.match.team1 = team;
+		} else {
+			node.parent!.match.team2 = team;
 		}
 	}
 
@@ -69,7 +99,18 @@ export class SingleEliminationBracketComponent {
 			match: this.createEmptyMatch(),
 		};
 
-		this.dfs(grandFinal, 0, 2);
+		this.dfs(grandFinal, 0, 2, [
+			this.grandFinals,
+			this.semiFinals,
+			this.quarterFinals,
+		]);
+
+		const matches: Match[] = [];
+		this.createMatches(this.teams, matches);
+		for (let i = 0; i < matches.length; i++) {
+			this.quarterFinals[i].match = matches[i];
+		}
+
 		return grandFinal;
 	}
 
@@ -93,7 +134,13 @@ export class SingleEliminationBracketComponent {
 		};
 	}
 
-	dfs(curr: TreeNode, currDepth: number, maxDepth: number) {
+	dfs(
+		curr: TreeNode,
+		currDepth: number,
+		maxDepth: number,
+		layers: TreeNode[][]
+	) {
+		layers[currDepth].push(curr);
 		if (currDepth === maxDepth) {
 			return;
 		}
@@ -101,11 +148,11 @@ export class SingleEliminationBracketComponent {
 		let newDepth = currDepth + 1;
 		if (curr.left === undefined) {
 			curr.left = this.createTreeNode(curr, true);
-			this.dfs(curr.left, newDepth, maxDepth);
+			this.dfs(curr.left, newDepth, maxDepth, layers);
 		}
 		if (curr.right === undefined) {
 			curr.right = this.createTreeNode(curr, false);
-			this.dfs(curr.left, newDepth, maxDepth);
+			this.dfs(curr.right, newDepth, maxDepth, layers);
 		}
 	}
 }

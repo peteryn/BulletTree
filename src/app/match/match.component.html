@@ -1,33 +1,39 @@
 <table>
 	<tr>
-		<td class="team" [class.winner]="team1Score > team2Score">
-			{{ team1 }}
+		<td
+			class="team"
+			[class.winner]="node.match.team1Score > node.match.team2Score"
+		>
+			{{ node.match.team1 }}
 		</td>
 		<td class="score">
 			<input
 				type="text"
 				name="team1Score"
 				id=""
-				value="{{ team1Score }}"
+				value="{{ node.match.team1Score }}"
 				(change)="update(team1ScoreInput.value, team2ScoreInput.value)"
 				#team1ScoreInput
-				[class.winner]="team1Score > team2Score"
+				[class.winner]="node.match.team1Score > node.match.team2Score"
 			/>
 		</td>
 	</tr>
 	<tr>
-		<td class="team" [class.winner]="team1Score < team2Score">
-			{{ team2 }}
+		<td
+			class="team"
+			[class.winner]="node.match.team1Score < node.match.team2Score"
+		>
+			{{ node.match.team2 }}
 		</td>
 		<td class="score">
 			<input
 				type="text"
 				name="team2Score"
 				id=""
-				value="{{ team2Score }}"
+				value="{{ node.match.team2Score }}"
 				(change)="update(team1ScoreInput.value, team2ScoreInput.value)"
 				#team2ScoreInput
-				[class.winner]="team1Score < team2Score"
+				[class.winner]="node.match.team1Score < node.match.team2Score"
 			/>
 		</td>
 	</tr>
