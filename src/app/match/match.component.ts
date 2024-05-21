@@ -17,12 +17,12 @@ export class MatchComponent {
 		this.node.match.team1Score = parseInt(t1Score);
 		this.node.match.team2Score = parseInt(t2Score);
 		this.winnerEvent.emit(this.node);
-		if (this.node.match.team1Score > this.node.match.team2Score) {
-			console.log(`${this.node?.match.team1} is winning`);
-		} else if (this.node.match.team1Score < this.node.match.team2Score) {
-			console.log(`${this.node?.match.team2} is winning`);
-		} else {
-			console.log('The series is tied');
-		}
+		// if (this.node.match.team1Score > this.node.match.team2Score) {
+		// 	console.log(`${this.node?.match.team1} is winning`);
+		// } else if (this.node.match.team1Score < this.node.match.team2Score) {
+		// 	console.log(`${this.node?.match.team2} is winning`);
+		// } else {
+		// 	console.log('The series is tied');
+		// }
 	}
 }

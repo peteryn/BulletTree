@@ -20,29 +20,26 @@ export class SingleEliminationBracketComponent {
 	grandFinalTeams: string[] = [];
 
 	teams = [
-		// 'Spacestation',
-		// 'Dignitas',
-		// 'Gen.G Mobil1 Racing',
-		// 'OG',
-		// 'M80',
-		// 'Cloud9',
-		// 'G2 Stride',
-		// 'Shopify Rebellion',
-		'Celtics',
-		'Heat',
-		'Cavaliers',
-		'Magic',
-		'Bucks',
-		'Pacers',
-		'Knicks',
-		'76ers',
+		'Spacestation',
+		'Dignitas',
+		'Gen.G Mobil1 Racing',
+		'OG',
+		'M80',
+		'Cloud9',
+		'G2 Stride',
+		'Shopify Rebellion',
+		// 'Celtics',
+		// 'Heat',
+		// 'Cavaliers',
+		// 'Magic',
+		// 'Bucks',
+		// 'Pacers',
+		// 'Knicks',
+		// '76ers',
 	];
 
 	constructor() {
-		// this.createMatches(this.teams, this.quarterFinals);
 		const grandFinal = this.createPlayoffBracket(this.teams);
-		console.log(grandFinal);
-		console.log(this.quarterFinals);
 	}
 
 	createMatches(teams: string[], matches: Match[]) {
