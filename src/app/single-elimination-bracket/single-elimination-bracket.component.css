@@ -3,8 +3,6 @@ article {
 	color: #e5e9f0;
 	margin-top: 3em;
 	grid-template-columns: 1fr 1fr 1fr;
-	max-width: 1000px;
-	margin: auto;
 }
 
 section {
