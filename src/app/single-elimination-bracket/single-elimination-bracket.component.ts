@@ -20,31 +20,14 @@ export class SingleEliminationBracketComponent {
 	semiFinalTeams: string[] = [];
 	grandFinalTeams: string[] = [];
 
-	// teams = [
-	// 	'Spacestation',
-	// 	'Dignitas',
-	// 	'Gen.G Mobil1 Racing',
-	// 	'OG',
-	// 	'M80',
-	// 	'Cloud9',
-	// 	'G2 Stride',
-	// 	'Shopify Rebellion',
-	// 	// 'Celtics',
-	// 	// 'Heat',
-	// 	// 'Cavaliers',
-	// 	// 'Magic',
-	// 	// 'Bucks',
-	// 	// 'Pacers',
-	// 	// 'Knicks',
-	// 	// '76ers',
-	// ];
 	teamsService = inject(TeamsService);
-	teams = this.teamsService.getAllTeams();
+	teams = this.teamsService.get8Teams();
 
 	constructor() {
 		const grandFinal = this.createPlayoffBracket(this.teams);
 	}
 
+	// TODO remove and use the one inside teams service
 	createMatches(teams: string[], matches: Match[]) {
 		for (let i = 0; i < teams.length; i += 2) {
 			matches.push({
@@ -53,22 +36,6 @@ export class SingleEliminationBracketComponent {
 				team1Score: 0,
 				team2Score: 0,
 			});
-		}
-	}
-
-	updateSemiFinals(winner: string) {
-		// TODO: remove winner, if the winner changes
-		this.semiFinalTeams.push(winner);
-
-		if (this.semiFinalTeams.length === 4) {
-			// this.createMatches(this.semiFinalTeams, this.semiFinals);
-		}
-	}
-
-	updateGrandFinals(winner: string) {
-		this.grandFinalTeams.push(winner);
-		if (this.grandFinalTeams.length === 2) {
-			// this.createMatches(this.grandFinalTeams, this.grandFinals);
 		}
 	}
 
