@@ -45,6 +45,7 @@ export class TeamsService {
 				team2: this.teams[i + 1],
 				team1Score: 0,
 				team2Score: 0,
+				matchId: Math.floor(Math.random() * 100000),
 			});
 		}
 		return matches;

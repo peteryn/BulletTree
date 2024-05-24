@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TreeNode } from '../tree-node';
+import { Match } from '../match';
 
 @Component({
 	selector: 'app-match',
@@ -9,20 +10,14 @@ import { TreeNode } from '../tree-node';
 	styleUrl: './match.component.css',
 })
 export class MatchComponent {
-	@Input() node!: TreeNode;
+	// @Input() node!: TreeNode;
+	@Input() match!: Match;
 
-	@Output() winnerEvent = new EventEmitter<TreeNode>();
+	@Output() winnerEvent = new EventEmitter<Match>();
 
 	update(t1Score: string, t2Score: string) {
-		this.node.match.team1Score = parseInt(t1Score);
-		this.node.match.team2Score = parseInt(t2Score);
-		this.winnerEvent.emit(this.node);
-		// if (this.node.match.team1Score > this.node.match.team2Score) {
-		// 	console.log(`${this.node?.match.team1} is winning`);
-		// } else if (this.node.match.team1Score < this.node.match.team2Score) {
-		// 	console.log(`${this.node?.match.team2} is winning`);
-		// } else {
-		// 	console.log('The series is tied');
-		// }
+		this.match.team1Score = parseInt(t1Score);
+		this.match.team2Score = parseInt(t2Score);
+		this.winnerEvent.emit(this.match);
 	}
 }

@@ -1,1 +1,6 @@
-<article>@for (match of round1; track match.team1) { }</article>
+<article>
+	@for (match of round1; track match.team1) {
+	<app-match [match]="match"></app-match>
+	<br />
+	}
+</article>

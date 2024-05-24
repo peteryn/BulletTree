@@ -23,6 +23,8 @@ export class SingleEliminationBracketComponent {
 	teamsService = inject(TeamsService);
 	teams = this.teamsService.get8Teams();
 
+	matchIdToNode = new Map<number, TreeNode>();
+
 	constructor() {
 		const grandFinal = this.createPlayoffBracket(this.teams);
 	}
@@ -35,17 +37,19 @@ export class SingleEliminationBracketComponent {
 				team2: teams[i + 1],
 				team1Score: 0,
 				team2Score: 0,
+				matchId: Math.floor(Math.random() * 100000), // TODO, figure out a better way to create ids
 			});
 		}
 	}
 
-	update(node: TreeNode) {
-		if (node.match.team1Score > node.match.team2Score) {
-			this.updateParent(node, node.match.team1);
-		} else if (node.match.team1Score < node.match.team2Score) {
-			this.updateParent(node, node.match.team2);
+	update(match: Match) {
+		const node = this.matchIdToNode.get(match.matchId); // need a way to go from match -> node
+		if (match.team1Score > match.team2Score) {
+			this.updateParent(node!, match.team1);
+		} else if (match.team1Score < match.team2Score) {
+			this.updateParent(node!, match.team2);
 		} else {
-			this.updateParent(node, '');
+			this.updateParent(node!, '');
 		}
 	}
 
@@ -76,7 +80,9 @@ export class SingleEliminationBracketComponent {
 		this.createMatches(this.teams, matches);
 		for (let i = 0; i < matches.length; i++) {
 			this.quarterFinals[i].match = matches[i];
+			this.matchIdToNode.set(matches[i].matchId, this.quarterFinals[i]);
 		}
+		this.matchIdToNode.set(grandFinal.match.matchId, grandFinal);
 
 		return grandFinal;
 	}
@@ -89,6 +95,7 @@ export class SingleEliminationBracketComponent {
 			onParentLeft: onParentLeft,
 			match: this.createEmptyMatch(),
 		};
+		this.matchIdToNode.set(node.match.matchId, node);
 		return node;
 	}
 
@@ -98,6 +105,7 @@ export class SingleEliminationBracketComponent {
 			team2: '',
 			team1Score: 0,
 			team2Score: 0,
+			matchId: Math.floor(Math.random() * 100000),
 		};
 	}
 
