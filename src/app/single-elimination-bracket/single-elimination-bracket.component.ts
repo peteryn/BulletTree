@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Match } from '../match';
 import { MatchComponent } from '../match/match.component';
 import { CommonModule } from '@angular/common';
 import { TreeNode } from '../tree-node';
+import { TeamsService } from '../teams.service';
 
 @Component({
 	selector: 'app-single-elimination-bracket',
@@ -19,24 +20,26 @@ export class SingleEliminationBracketComponent {
 	semiFinalTeams: string[] = [];
 	grandFinalTeams: string[] = [];
 
-	teams = [
-		'Spacestation',
-		'Dignitas',
-		'Gen.G Mobil1 Racing',
-		'OG',
-		'M80',
-		'Cloud9',
-		'G2 Stride',
-		'Shopify Rebellion',
-		// 'Celtics',
-		// 'Heat',
-		// 'Cavaliers',
-		// 'Magic',
-		// 'Bucks',
-		// 'Pacers',
-		// 'Knicks',
-		// '76ers',
-	];
+	// teams = [
+	// 	'Spacestation',
+	// 	'Dignitas',
+	// 	'Gen.G Mobil1 Racing',
+	// 	'OG',
+	// 	'M80',
+	// 	'Cloud9',
+	// 	'G2 Stride',
+	// 	'Shopify Rebellion',
+	// 	// 'Celtics',
+	// 	// 'Heat',
+	// 	// 'Cavaliers',
+	// 	// 'Magic',
+	// 	// 'Bucks',
+	// 	// 'Pacers',
+	// 	// 'Knicks',
+	// 	// '76ers',
+	// ];
+	teamsService = inject(TeamsService);
+	teams = this.teamsService.getAllTeams();
 
 	constructor() {
 		const grandFinal = this.createPlayoffBracket(this.teams);
