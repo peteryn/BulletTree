@@ -1,35 +1,105 @@
 import { Injectable } from '@angular/core';
 import { Match } from './match';
+import { Team } from './team';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TeamsService {
-	teams = [
-		'Karmine Corp',
-		'Limitless',
-		'BDS',
-		'Elevate',
-		'G2',
-		'Pioneers',
-		'Vitality',
-		'Complexity',
-		'Gen.G',
-		'PWR',
-		'Gentlemates',
-		'Rule One',
-		'Falcons',
-		'OG',
-		'Luminosity',
-		'Furia',
-	];
-	constructor() {}
+	teams: Team[] = [];
+	na_qual6: Team[] = [
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
 
-	getAllTeams() {
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'G2 Stide',
+			logo: './assets/images/g2.png',
+			gameDifferential: 0,
+		},
+	];
+	constructor() {
+		this.teams = this.na_qual6;
+	}
+
+	getAllTeams(): Team[] {
 		return this.teams;
 	}
 
-	get8Teams() {
+	get8Teams(): Team[] {
 		const res = [];
 		for (let i = 0; i < 8; i++) {
 			res.push(this.teams[i]);
@@ -37,7 +107,7 @@ export class TeamsService {
 		return res;
 	}
 
-	createMatches() {
+	createMatches(): Match[] {
 		const matches: Match[] = [];
 		for (let i = 0; i < this.teams.length; i += 2) {
 			matches.push({

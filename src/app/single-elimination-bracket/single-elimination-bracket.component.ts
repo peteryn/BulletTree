@@ -4,6 +4,7 @@ import { MatchComponent } from '../match/match.component';
 import { CommonModule } from '@angular/common';
 import { TreeNode } from '../tree-node';
 import { TeamsService } from '../teams.service';
+import { Team } from '../team';
 
 @Component({
 	selector: 'app-single-elimination-bracket',
@@ -30,7 +31,7 @@ export class SingleEliminationBracketComponent {
 	}
 
 	// TODO remove and use the one inside teams service
-	createMatches(teams: string[], matches: Match[]) {
+	createMatches(teams: Team[], matches: Match[]) {
 		for (let i = 0; i < teams.length; i += 2) {
 			matches.push({
 				team1: teams[i],
@@ -49,11 +50,15 @@ export class SingleEliminationBracketComponent {
 		} else if (match.team1Score < match.team2Score) {
 			this.updateParent(node!, match.team2);
 		} else {
-			this.updateParent(node!, '');
+			this.updateParent(node!, {
+				name: '',
+				logo: '',
+				gameDifferential: 0,
+			});
 		}
 	}
 
-	updateParent(node: TreeNode, team: string) {
+	updateParent(node: TreeNode, team: Team | undefined) {
 		if (node.onParentLeft) {
 			node.parent!.match.team1 = team;
 		} else {
@@ -61,7 +66,7 @@ export class SingleEliminationBracketComponent {
 		}
 	}
 
-	createPlayoffBracket(teamsBySeed: string[]): TreeNode {
+	createPlayoffBracket(teams: Team[]): TreeNode {
 		const grandFinal: TreeNode = {
 			left: undefined,
 			right: undefined,
@@ -77,7 +82,7 @@ export class SingleEliminationBracketComponent {
 		]);
 
 		const matches: Match[] = [];
-		this.createMatches(this.teams, matches);
+		this.createMatches(teams, matches);
 		for (let i = 0; i < matches.length; i++) {
 			this.quarterFinals[i].match = matches[i];
 			this.matchIdToNode.set(matches[i].matchId, this.quarterFinals[i]);
@@ -101,8 +106,8 @@ export class SingleEliminationBracketComponent {
 
 	createEmptyMatch(): Match {
 		return {
-			team1: '',
-			team2: '',
+			team1: undefined,
+			team2: undefined,
 			team1Score: 0,
 			team2Score: 0,
 			matchId: Math.floor(Math.random() * 100000),
