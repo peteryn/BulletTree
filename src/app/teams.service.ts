@@ -14,80 +14,80 @@ export class TeamsService {
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Cold',
+			logo: './assets/images/default.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Gen.G',
+			logo: './assets/images/geng.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
-			gameDifferential: 0,
-		},
-
-		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
-			gameDifferential: 0,
-		},
-		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
-			gameDifferential: 0,
-		},
-		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
-			gameDifferential: 0,
-		},
-		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Cheers',
+			logo: './assets/images/cheers.png',
 			gameDifferential: 0,
 		},
 
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Luminosity Gaming',
+			logo: './assets/images/luminosity.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Netherlamericanada',
+			logo: './assets/images/netherlamericanada.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'OG',
+			logo: './assets/images/og.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Deleted XD',
+			logo: './assets/images/deleted_xd.png',
+			gameDifferential: 0,
+		},
+
+		{
+			name: 'TSM',
+			logo: './assets/images/tsm.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Snowmen',
+			logo: './assets/images/snowmen.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'M80',
+			logo: './assets/images/m80.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Cloud 9',
+			logo: './assets/images/cloud9.png',
 			gameDifferential: 0,
 		},
 		{
-			name: 'G2 Stide',
-			logo: './assets/images/g2.png',
+			name: 'Spacestation Gaming',
+			logo: './assets/images/ssg.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'Shopify Rebellion',
+			logo: './assets/images/shopify.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'Moist Esports',
+			logo: './assets/images/moist.png',
+			gameDifferential: 0,
+		},
+		{
+			name: 'NRG',
+			logo: './assets/images/nrg.png',
 			gameDifferential: 0,
 		},
 	];

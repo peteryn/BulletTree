@@ -28,6 +28,7 @@ export class SingleEliminationBracketComponent {
 
 	constructor() {
 		const grandFinal = this.createPlayoffBracket(this.teams);
+		console.log(grandFinal);
 	}
 
 	// TODO remove and use the one inside teams service

@@ -9,7 +9,16 @@ td {
 }
 
 .team {
-	width: 200px;
+	width: 220px;
+}
+
+.team-section {
+	display: flex;
+	align-items: center;
+}
+
+.team img {
+	padding-right: 10px;
 }
 
 .score {
