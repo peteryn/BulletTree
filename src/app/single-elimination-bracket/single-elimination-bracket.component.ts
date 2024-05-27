@@ -28,7 +28,6 @@ export class SingleEliminationBracketComponent {
 
 	constructor() {
 		const grandFinal = this.createPlayoffBracket(this.teams);
-		console.log(grandFinal);
 	}
 
 	// TODO remove and use the one inside teams service
@@ -44,6 +43,8 @@ export class SingleEliminationBracketComponent {
 		}
 	}
 
+	// TODO: bug, users inputting scoreline before there is a team causes team to be declared winner without updating bracket
+	// disable form input when there is no team
 	update(match: Match) {
 		const node = this.matchIdToNode.get(match.matchId); // need a way to go from match -> node
 		if (match.team1Score > match.team2Score) {

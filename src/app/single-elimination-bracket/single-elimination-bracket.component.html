@@ -3,7 +3,7 @@
 		<ng-container *ngFor="let node of quarterFinals">
 			<app-match
 				[match]="node.match"
-				(winnerEvent)="update($event)"
+				(scoreUpdate)="update($event)"
 			></app-match>
 		</ng-container>
 	</section>
@@ -11,7 +11,7 @@
 		<ng-container *ngFor="let node of semiFinals">
 			<app-match
 				[match]="node.match"
-				(winnerEvent)="update($event)"
+				(scoreUpdate)="update($event)"
 			></app-match>
 		</ng-container>
 	</section>

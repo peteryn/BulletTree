@@ -10,14 +10,13 @@ import { Match } from '../match';
 	styleUrl: './match.component.css',
 })
 export class MatchComponent {
-	// @Input() node!: TreeNode;
 	@Input() match!: Match;
 
-	@Output() winnerEvent = new EventEmitter<Match>();
+	@Output() scoreUpdate = new EventEmitter<Match>();
 
 	update(t1Score: string, t2Score: string) {
 		this.match.team1Score = parseInt(t1Score);
 		this.match.team2Score = parseInt(t2Score);
-		this.winnerEvent.emit(this.match);
+		this.scoreUpdate.emit(this.match);
 	}
 }
