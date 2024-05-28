@@ -24,7 +24,17 @@ export class SwissBracketComponent {
 	round4lower: Match[] = [];
 	round5: Match[] = [];
 
-	constructor() {}
+	constructor() {
+		for (let i = 0; i < 4; i++) {
+			this.round2upper.push({
+				team1Score: 0,
+				team2Score: 0,
+				matchId: Math.floor(Math.random() * 100000),
+				team1: undefined,
+				team2: undefined,
+			});
+		}
+	}
 
 	update(match: Match) {
 		// note: this won't work when there are multiple layers
@@ -51,6 +61,7 @@ export class SwissBracketComponent {
 		let losers: Team[] = [];
 		[winners, losers] = this.getWinnersAndLosers(round1);
 		const winnersSorted = this.gameDiffSort(winners);
+		this.createMatches(winnersSorted, this.round2upper);
 		console.log(winnersSorted);
 	}
 
@@ -75,5 +86,18 @@ export class SwissBracketComponent {
 				b.gameDifferential - a.gameDifferential ||
 				a.initialSeed - b.initialSeed
 		);
+	}
+
+	createMatches(teams: Team[], matches: Match[]) {
+		let l = 0;
+		let r = teams.length - 1;
+		let i = 0;
+		while (l < r) {
+			matches[i].team1 = teams[l];
+			matches[i].team2 = teams[r];
+			l++;
+			r--;
+			i++;
+		}
 	}
 }
