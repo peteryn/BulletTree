@@ -27,13 +27,13 @@ export class SwissBracketComponent {
 	constructor() {}
 
 	update(match: Match) {
-		console.log('score update');
 		// note: this won't work when there are multiple layers
 		// may need to create a game diff attribute for each round
 		match.team1!.gameDifferential = match.team1Score - match.team2Score;
 		match.team2!.gameDifferential = match.team2Score - match.team1Score;
 		if (this.scoreEnteredInAll(this.round1)) {
 			// calculate next swiss round
+			this.calculateRound2(this.round1);
 		}
 	}
 
@@ -50,6 +50,8 @@ export class SwissBracketComponent {
 		let winners: Team[] = [];
 		let losers: Team[] = [];
 		[winners, losers] = this.getWinnersAndLosers(round1);
+		const winnersSorted = this.gameDiffSort(winners);
+		console.log(winnersSorted);
 	}
 
 	getWinnersAndLosers(round: Match[]) {
@@ -65,5 +67,13 @@ export class SwissBracketComponent {
 			}
 		}
 		return [winners, losers];
+	}
+
+	gameDiffSort(teams: Team[]) {
+		return teams.sort(
+			(a, b) =>
+				b.gameDifferential - a.gameDifferential ||
+				a.initialSeed - b.initialSeed
+		);
 	}
 }

@@ -10,83 +10,99 @@ export class TeamsService {
 	na_qual6: Team[] = [
 		{
 			name: 'G2 Stide',
+			initialSeed: 1,
 			logo: './assets/images/g2.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Cold',
+			initialSeed: 16,
 			logo: './assets/images/default.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Gen.G',
+			initialSeed: 2,
 			logo: './assets/images/geng.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Cheers',
+			initialSeed: 15,
 			logo: './assets/images/cheers.png',
 			gameDifferential: 0,
 		},
 
 		{
 			name: 'Luminosity Gaming',
+			initialSeed: 3,
 			logo: './assets/images/luminosity.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Netherlamericanada',
+			initialSeed: 14,
 			logo: './assets/images/netherlamericanada.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'OG',
+			initialSeed: 4,
 			logo: './assets/images/og.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Deleted XD',
+			initialSeed: 13,
 			logo: './assets/images/deleted_xd.png',
 			gameDifferential: 0,
 		},
 
 		{
 			name: 'TSM',
+			initialSeed: 5,
 			logo: './assets/images/tsm.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Snowmen',
+			initialSeed: 12,
 			logo: './assets/images/snowmen.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'M80',
+			initialSeed: 6,
 			logo: './assets/images/m80.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Cloud 9',
+			initialSeed: 11,
 			logo: './assets/images/cloud9.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Spacestation Gaming',
+			initialSeed: 7,
 			logo: './assets/images/ssg.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'Shopify Rebellion',
 			logo: './assets/images/shopify.png',
+			initialSeed: 10,
 			gameDifferential: 0,
 		},
 		{
 			name: 'Moist Esports',
+			initialSeed: 8,
 			logo: './assets/images/moist.png',
 			gameDifferential: 0,
 		},
 		{
 			name: 'NRG',
+			initialSeed: 9,
 			logo: './assets/images/nrg.png',
 			gameDifferential: 0,
 		},

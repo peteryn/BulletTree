@@ -54,6 +54,7 @@ export class SingleEliminationBracketComponent {
 		} else {
 			this.updateParent(node!, {
 				name: '',
+				initialSeed: -1,
 				logo: '',
 				gameDifferential: 0,
 			});
