@@ -178,7 +178,7 @@ export class SwissBracketComponent {
 
 		let lowerWinner: Team[];
 		let lowerLoser: Team[];
-		[lowerWinner, lowerLoser] = this.getWinnersAndLosers(this.round3middle);
+		[lowerWinner, lowerLoser] = this.getWinnersAndLosers(this.round3lower);
 		lowerWinner = this.gameDiffSort(lowerWinner, 3);
 		this.eliminated.concat(this.gameDiffSort(lowerLoser, 3));
 
@@ -198,7 +198,21 @@ export class SwissBracketComponent {
 		);
 		this.round4upper[this.round4upper.length - 1].team1 = leftOvers[0];
 		this.round4upper[this.round4upper.length - 1].team2 = leftOvers[1];
-		console.log(leftOvers);
+
+		// handle r4 lower
+		console.log(middleLoser);
+		console.log(lowerWinner);
+		const lowerLeftovers = middleLoser.splice(2, 2);
+		this.createComplexMatchs(
+			r1r2r3matches,
+			middleLoser,
+			lowerWinner,
+			this.round4lower
+		);
+		console.log(lowerLeftovers);
+		this.round4lower[this.round4lower.length - 1].team1 = lowerLeftovers[0];
+		this.round4lower[this.round4lower.length - 1].team2 = lowerLeftovers[1];
+		console.log(this.round4lower);
 	}
 
 	createComplexMatchs(
