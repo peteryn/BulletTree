@@ -52,12 +52,7 @@ export class SingleEliminationBracketComponent {
 		} else if (match.team1Score < match.team2Score) {
 			this.updateParent(node!, match.team2);
 		} else {
-			this.updateParent(node!, {
-				name: '',
-				initialSeed: -1,
-				logo: '',
-				gameDifferential: 0,
-			});
+			this.updateParent(node!, undefined);
 		}
 	}
 

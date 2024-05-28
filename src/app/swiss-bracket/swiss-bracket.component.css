@@ -19,3 +19,7 @@ section {
 	align-items: center;
 	row-gap: 1em;
 }
+
+br {
+	margin: 1em 0;
+}
