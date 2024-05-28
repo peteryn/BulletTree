@@ -24,15 +24,24 @@
 	</section>
 	<section>
 		@for (match of round3upper; track match.team1) {
-		<app-match [match]="match" (scoreUpdate)="update($event)"></app-match>
+		<app-match
+			[match]="match"
+			(scoreUpdate)="updateRound4($event)"
+		></app-match>
 		}
 		<br />
 		@for (match of round3middle; track match.team1) {
-		<app-match [match]="match" (scoreUpdate)="update($event)"></app-match>
+		<app-match
+			[match]="match"
+			(scoreUpdate)="updateRound4($event)"
+		></app-match>
 		}
 		<br />
 		@for (match of round3lower; track match.team1) {
-		<app-match [match]="match" (scoreUpdate)="update($event)"></app-match>
+		<app-match
+			[match]="match"
+			(scoreUpdate)="updateRound4($event)"
+		></app-match>
 		}
 	</section>
 	<section>

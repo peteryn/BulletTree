@@ -23,6 +23,8 @@ export class SwissBracketComponent {
 	round4upper: Match[] = [];
 	round4lower: Match[] = [];
 	round5: Match[] = [];
+	qualified: Team[] = [];
+	eliminated: Team[] = [];
 
 	constructor() {
 		for (let i = 0; i < 4; i++) {
@@ -71,6 +73,8 @@ export class SwissBracketComponent {
 			// calculate next swiss round
 			this.calculateRound2(this.round1);
 			this.updateRound3(undefined);
+		} else {
+			// TODO: clear all later stage matches
 		}
 	}
 
@@ -86,6 +90,23 @@ export class SwissBracketComponent {
 			this.scoreEnteredInAll(this.round2lower)
 		) {
 			this.calculateRound3();
+		} else {
+		}
+	}
+
+	updateRound4(match: Match | undefined) {
+		if (match !== undefined) {
+			match.team1!.round3Differential =
+				match.team1Score - match.team2Score;
+			match.team2!.round3Differential =
+				match.team2Score - match.team1Score;
+		}
+		if (
+			this.scoreEnteredInAll(this.round3lower) &&
+			this.scoreEnteredInAll(this.round3middle) &&
+			this.scoreEnteredInAll(this.round3lower)
+		) {
+			this.calculateRound4();
 		}
 	}
 
@@ -103,10 +124,8 @@ export class SwissBracketComponent {
 		let losers: Team[] = [];
 		[winners, losers] = this.getWinnersAndLosers(round1);
 		const winnersSorted = this.gameDiffSort(winners, 1);
-		console.log(winnersSorted);
 		this.createMatches(winnersSorted, this.round2upper);
 		const losersSorted = this.gameDiffSort(losers, 1);
-		console.log(losersSorted);
 		this.createMatches(losersSorted, this.round2lower);
 	}
 
@@ -134,19 +153,71 @@ export class SwissBracketComponent {
 
 		const upperLosersSorted = this.gameDiffSort(upperLosers, 2);
 		const lowerWinnersSorted = this.gameDiffSort(lowerWinners, 2);
-		let matchIndex = 0;
+		this.createComplexMatchs(
+			r1Andr2Matches,
+			upperLosersSorted,
+			lowerWinnersSorted,
+			this.round3middle
+		);
+	}
 
-		while (upperLosersSorted.length > 0) {
-			const currTeam = upperLosersSorted[0];
+	calculateRound4() {
+		let upperWinner: Team[];
+		let upperLoser: Team[];
+		[upperWinner, upperLoser] = this.getWinnersAndLosers(this.round3upper);
+		this.qualified.concat(this.gameDiffSort(upperWinner, 3));
+		upperLoser = this.gameDiffSort(upperLoser, 3);
+
+		let middleWinner: Team[];
+		let middleLoser: Team[];
+		[middleWinner, middleLoser] = this.getWinnersAndLosers(
+			this.round3middle
+		);
+		middleWinner = this.gameDiffSort(middleWinner, 3);
+		middleLoser = this.gameDiffSort(middleLoser, 3);
+
+		let lowerWinner: Team[];
+		let lowerLoser: Team[];
+		[lowerWinner, lowerLoser] = this.getWinnersAndLosers(this.round3middle);
+		lowerWinner = this.gameDiffSort(lowerWinner, 3);
+		this.eliminated.concat(this.gameDiffSort(lowerLoser, 3));
+
+		const r1r2r3matches = this.round1
+			.concat(this.round2lower)
+			.concat(this.round2upper)
+			.concat(this.round3lower)
+			.concat(this.round3middle)
+			.concat(this.round3upper);
+
+		// handle r4 upper
+		const leftOvers = this.createComplexMatchs(
+			r1r2r3matches,
+			upperLoser,
+			middleWinner,
+			this.round4upper
+		);
+		this.round4upper[this.round4upper.length - 1].team1 = leftOvers[0];
+		this.round4upper[this.round4upper.length - 1].team2 = leftOvers[1];
+		console.log(leftOvers);
+	}
+
+	createComplexMatchs(
+		allMatches: Match[],
+		upper: Team[],
+		lower: Team[],
+		round: Match[]
+	) {
+		let matchIndex = 0;
+		while (upper.length > 0) {
+			const currTeam = upper[0];
 			const alreadyPlayed = this.getTeamsAlreadyPlayed(
-				r1Andr2Matches,
+				allMatches,
 				currTeam.name
 			);
-			let losersIndex = lowerWinnersSorted.length - 1;
-			let potentialTeam = lowerWinnersSorted[losersIndex];
+			let losersIndex = lower.length - 1;
+			let potentialTeam = lower[losersIndex];
 			while (true) {
-				potentialTeam = lowerWinnersSorted[losersIndex];
-				// if potential team not in alreadyPlayed, break
+				potentialTeam = lower[losersIndex];
 				if (
 					this.checkIfPlayedAlready(alreadyPlayed, potentialTeam.name)
 				) {
@@ -156,18 +227,15 @@ export class SwissBracketComponent {
 				}
 			}
 
-			this.round3middle[matchIndex].team1 = currTeam;
-			this.round3middle[matchIndex].team2 = potentialTeam;
+			round[matchIndex].team1 = currTeam;
+			round[matchIndex].team2 = potentialTeam;
 
-			upperLosersSorted.splice(0, 1);
-			lowerWinnersSorted.splice(losersIndex, 1);
+			upper.splice(0, 1);
+			lower.splice(losersIndex, 1);
 			matchIndex++;
 		}
 
-		console.log(upperLosersSorted);
-		console.log(lowerWinnersSorted);
-		// const middleTeams: Team[] = upperLosers.concat(lowerWinners);
-		// this.createMatches(this.gameDiffSort(middleTeams), this.round3middle);
+		return lower;
 	}
 
 	checkIfPlayedAlready(alreadyPlayed: Team[], teamName: string) {
