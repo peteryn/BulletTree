@@ -110,6 +110,21 @@ export class SwissBracketComponent {
 		}
 	}
 
+	updateRound5(match: Match | undefined) {
+		if (match !== undefined) {
+			match.team1!.round4Differential =
+				match.team1Score - match.team2Score;
+			match.team2!.round4Differential =
+				match.team2Score - match.team1Score;
+		}
+		if (
+			this.scoreEnteredInAll(this.round4upper) &&
+			this.scoreEnteredInAll(this.round4lower)
+		) {
+			this.calculateRound5();
+		}
+	}
+
 	scoreEnteredInAll(round: Match[]): boolean {
 		for (let match of round) {
 			if (match.team1Score === match.team2Score) {
@@ -200,8 +215,6 @@ export class SwissBracketComponent {
 		this.round4upper[this.round4upper.length - 1].team2 = leftOvers[1];
 
 		// handle r4 lower
-		console.log(middleLoser);
-		console.log(lowerWinner);
 		const lowerLeftovers = middleLoser.splice(2, 2);
 		this.createComplexMatchs(
 			r1r2r3matches,
@@ -209,10 +222,61 @@ export class SwissBracketComponent {
 			lowerWinner,
 			this.round4lower
 		);
-		console.log(lowerLeftovers);
 		this.round4lower[this.round4lower.length - 1].team1 = lowerLeftovers[0];
 		this.round4lower[this.round4lower.length - 1].team2 = lowerLeftovers[1];
-		console.log(this.round4lower);
+	}
+
+	calculateRound5() {
+		let upperWinner: Team[];
+		let upperLoser: Team[];
+		[upperWinner, upperLoser] = this.getWinnersAndLosers(this.round4upper);
+		this.qualified.concat(this.gameDiffSort(upperWinner, 4));
+		upperLoser = this.gameDiffSort(upperLoser, 4);
+
+		let lowerWinner: Team[];
+		let lowerLoser: Team[];
+		[lowerWinner, lowerLoser] = this.getWinnersAndLosers(this.round4lower);
+		lowerWinner = this.gameDiffSort(lowerWinner, 4);
+		this.eliminated.concat(this.gameDiffSort(lowerLoser, 4));
+
+		const r1r2r3r4matches = this.round1
+			.concat(this.round2lower)
+			.concat(this.round2upper)
+			.concat(this.round3lower)
+			.concat(this.round3middle)
+			.concat(this.round4upper)
+			.concat(this.round4lower);
+
+		const remainingTeams = upperLoser.concat(lowerWinner);
+		let l = 0;
+		let r = remainingTeams.length - 1;
+		let matchIndex = 0;
+		while (remainingTeams.length > 0) {
+			const topTeam = remainingTeams[l];
+			console.log(topTeam);
+			const alreadyPlayed = this.getTeamsAlreadyPlayed(
+				r1r2r3r4matches,
+				topTeam.name
+			);
+			console.log(alreadyPlayed);
+			let botTeam = remainingTeams[r];
+			while (true) {
+				botTeam = remainingTeams[r];
+				if (this.checkIfPlayedAlready(alreadyPlayed, botTeam.name)) {
+					r--;
+				} else {
+					break;
+				}
+			}
+			console.log(botTeam);
+			this.round5[matchIndex].team1 = topTeam;
+			this.round5[matchIndex].team2 = botTeam;
+
+			remainingTeams.splice(r, 1);
+			remainingTeams.splice(l, 1);
+			matchIndex++;
+			r = remainingTeams.length - 1;
+		}
 	}
 
 	createComplexMatchs(
