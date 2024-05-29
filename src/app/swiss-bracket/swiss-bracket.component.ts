@@ -14,7 +14,7 @@ import { MatchComponent } from '../match/match.component';
 export class SwissBracketComponent {
 	teamsService = inject(TeamsService);
 	teams = this.teamsService.getAllTeams();
-	round1: Match[] = this.teamsService.createMatches();
+	round1: Match[] = [];
 	round2upper: Match[] = [];
 	round2lower: Match[] = [];
 	round3upper: Match[] = [];
@@ -27,6 +27,10 @@ export class SwissBracketComponent {
 	eliminated: Team[] = [];
 
 	constructor() {
+		for (let i = 0; i < 8; i++) {
+			this.round1.push(this.createEmptyMatch());
+		}
+
 		for (let i = 0; i < 4; i++) {
 			this.round2upper.push(this.createEmptyMatch());
 			this.round2lower.push(this.createEmptyMatch());
@@ -43,6 +47,8 @@ export class SwissBracketComponent {
 			this.round3upper.push(this.createEmptyMatch());
 			this.round3lower.push(this.createEmptyMatch());
 		}
+		this.createMatches(this.teams, this.round1);
+		this.updateRound2(undefined);
 	}
 
 	createEmptyMatch(): Match {
@@ -66,9 +72,13 @@ export class SwissBracketComponent {
 		}
 	}
 
-	updateRound2(match: Match) {
-		match.team1!.round1Differential = match.team1Score - match.team2Score;
-		match.team2!.round1Differential = match.team2Score - match.team1Score;
+	updateRound2(match: Match | undefined) {
+		if (match !== undefined) {
+			match.team1!.round1Differential =
+				match.team1Score - match.team2Score;
+			match.team2!.round1Differential =
+				match.team2Score - match.team1Score;
+		}
 		if (this.scoreEnteredInAll(this.round1)) {
 			// calculate next swiss round
 			this.calculateRound2(this.round1);
@@ -139,6 +149,8 @@ export class SwissBracketComponent {
 		let losers: Team[] = [];
 		[winners, losers] = this.getWinnersAndLosers(round1);
 		const winnersSorted = this.gameDiffSort(winners, 1);
+		console.log('winners sorted');
+		console.log(winnersSorted);
 		this.createMatches(winnersSorted, this.round2upper);
 		const losersSorted = this.gameDiffSort(losers, 1);
 		this.createMatches(losersSorted, this.round2lower);
@@ -406,9 +418,45 @@ export class SwissBracketComponent {
 		while (l < r) {
 			matches[i].team1 = teams[l];
 			matches[i].team2 = teams[r];
+			matches[i].team1Score = this.gameDiffToScore(
+				teams[l].round1Differential
+			);
+			matches[i].team2Score = this.gameDiffToScore(
+				teams[r].round1Differential
+			);
 			l++;
 			r--;
 			i++;
 		}
+	}
+
+	// game diff to match score for bo5
+	// 3 -> 3
+	// 2 -> 3
+	// 1 -> 3
+	// -1 -> 2
+	// -2 -> 1
+	// -3 -> 0
+	gameDiffToScore(gameDiff: number) {
+		let res = 0;
+		switch (gameDiff) {
+			case 3:
+			case 2:
+			case 1:
+				res = 3;
+				break;
+			case -1:
+				res = 2;
+				break;
+			case -2:
+				res = 1;
+				break;
+			case -3:
+				res = 0;
+				break;
+			default:
+				res = 0;
+		}
+		return res;
 	}
 }
