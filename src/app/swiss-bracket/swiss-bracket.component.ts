@@ -302,23 +302,25 @@ export class SwissBracketComponent {
 		for (let i = 0; i < round.length; i++) {
 			const t1 = res[i][0];
 			const t2 = res[i][1];
-			if ((this.checkIfPlayedAlready(upperCopy, t1.name) && this.checkIfPlayedAlready(upperCopy, t2.name)) || 
-				(this.checkIfPlayedAlready(lowerCopy, t1.name) && this.checkIfPlayedAlready(lowerCopy, t2.name))) {
-					// const temp = this.gameDiffSort(res[i], 3)
-					const temp = res[i].sort((a, b) => a.initialSeed - b.initialSeed);
-					console.log("HELLO")
-					console.log(temp);
-					round[i].team1 = temp[0];
-					round[i].team2 = temp[1];
-			}
-			else if (this.checkIfPlayedAlready(upper, t1.name)) {
-				round[i].team1 = t2;
-				round[i].team2 = t1;
-			} else if (this.checkIfPlayedAlready(lower, t1.name)) {
-				round[i].team1 = t1;
-				round[i].team2 = t2;
-			} else {
-			}
+			round[i].team1 = t1;
+			round[i].team2 = t2;
+			// if ((this.checkIfPlayedAlready(upperCopy, t1.name) && this.checkIfPlayedAlready(upperCopy, t2.name)) || 
+			// 	(this.checkIfPlayedAlready(lowerCopy, t1.name) && this.checkIfPlayedAlready(lowerCopy, t2.name))) {
+			// 		// const temp = this.gameDiffSort(res[i], 3)
+			// 		const temp = res[i].sort((a, b) => a.initialSeed - b.initialSeed);
+			// 		console.log("HELLO")
+			// 		console.log(temp);
+			// 		round[i].team1 = temp[0];
+			// 		round[i].team2 = temp[1];
+			// }
+			// else if (this.checkIfPlayedAlready(upper, t1.name)) {
+			// 	round[i].team1 = t2;
+			// 	round[i].team2 = t1;
+			// } else if (this.checkIfPlayedAlready(lower, t1.name)) {
+			// 	round[i].team1 = t1;
+			// 	round[i].team2 = t2;
+			// } else {
+			// }
 		}
 	}
 
