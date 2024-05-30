@@ -150,8 +150,8 @@ export class SwissBracketComponent {
 		let losers: Team[] = [];
 		[winners, losers] = this.getWinnersAndLosers(round1);
 		const winnersSorted = this.gameDiffSort(winners, 1);
-		console.log('winners sorted');
-		console.log(winnersSorted);
+		// console.log('winners sorted');
+		// console.log(winnersSorted);
 		this.createMatches(winnersSorted, this.round2upper);
 		const losersSorted = this.gameDiffSort(losers, 1);
 		this.createMatches(losersSorted, this.round2lower);
@@ -218,25 +218,105 @@ export class SwissBracketComponent {
 			.concat(this.round3upper);
 
 		// handle r4 upper
-		const leftOvers = this.createComplexMatchs(
-			r1r2r3matches,
-			upperLoser,
-			middleWinner,
-			this.round4upper
-		);
-		this.round4upper[this.round4upper.length - 1].team1 = leftOvers[0];
-		this.round4upper[this.round4upper.length - 1].team2 = leftOvers[1];
+		// const leftOvers = this.createComplexMatchs(
+		// 	r1r2r3matches,
+		// 	upperLoser,
+		// 	middleWinner,
+		// 	this.round4upper
+		// );
+		// this.round4upper[this.round4upper.length - 1].team1 = leftOvers[0];
+		// this.round4upper[this.round4upper.length - 1].team2 = leftOvers[1];
+		const upperLoserCopy = JSON.parse(JSON.stringify(upperLoser));
+		const middleWinnerCopy = JSON.parse(JSON.stringify(middleWinner));
+		upperLoser.push(middleWinner.splice(0, 1)[0]);
+		this.createComplexMatchs2(r1r2r3matches, upperLoser, middleWinner, this.round4upper, upperLoserCopy, middleWinnerCopy);
 
 		// handle r4 lower
-		const lowerLeftovers = middleLoser.splice(2, 2);
-		this.createComplexMatchs(
-			r1r2r3matches,
-			middleLoser,
-			lowerWinner,
-			this.round4lower
-		);
-		this.round4lower[this.round4lower.length - 1].team1 = lowerLeftovers[0];
-		this.round4lower[this.round4lower.length - 1].team2 = lowerLeftovers[1];
+		// middleLoser.push(lowerWinner.splice(0, 1)[0]);
+		const middleLoserCopy = JSON.parse(JSON.stringify(middleLoser));
+		const lowerWinnerCopy = JSON.parse(JSON.stringify(lowerWinner));
+		lowerWinner.push(middleLoser.splice(middleLoser.length - 1, 1)[0]);
+		this.createComplexMatchs2(r1r2r3matches, middleLoser, lowerWinner, this.round4lower, middleLoserCopy, lowerWinnerCopy);
+		// const lowerLeftovers = middleLoser.splice(2, 2);
+		// this.createComplexMatchs(
+		// 	r1r2r3matches,
+		// 	middleLoser,
+		// 	lowerWinner,
+		// 	this.round4lower
+		// );
+		// this.round4lower[this.round4lower.length - 1].team1 = lowerLeftovers[0];
+		// this.round4lower[this.round4lower.length - 1].team2 = lowerLeftovers[1];
+	}
+
+	createComplexMatchs2(allMatches: Match[], upper: Team[], lower: Team[], round: Match[], upperCopy: Team[], lowerCopy: Team[]) {
+		const cartesianProduct = (a: Team[], b: Team[]) => a.flatMap(x => b.map(y => [x, y]));
+		const upperLowerCross = cartesianProduct(upper, lower.reverse());
+		let upperLowerCrossCopy = JSON.parse(JSON.stringify(upperLowerCross));
+		for (let i = 0; i < upperLowerCrossCopy.length; i++) {
+			const t1 = upperLowerCrossCopy[i][0];
+			const t2 = upperLowerCrossCopy[i][1];
+			const alreadyPlayed = this.getTeamsAlreadyPlayed(allMatches, t1.name);
+			if (this.checkIfPlayedAlready(alreadyPlayed, t2.name)) {
+				upperLowerCrossCopy[i] = null;	
+			}
+		}
+		upperLowerCrossCopy = upperLowerCrossCopy.filter((item: Team[]) => item);
+		let counter = 0;
+		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
+		let res: Team[][] = [];
+		let numResets = 1;
+		console.log("Before crazy loop")
+		while (counter < 3) {
+			if (teamCrossClean.length === 0) {
+				teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
+				teamCrossClean.splice(0, numResets);
+				numResets++;
+				counter = 0;
+				res = [];
+			}
+
+			const t1 = teamCrossClean[0][0];
+			const t2 = teamCrossClean[0][1];
+			res.push(teamCrossClean.splice(0,1)[0]);
+
+			// remove team pairs that have t1 or t2
+			for (let i = 0; i < teamCrossClean.length; i++) {
+				if (teamCrossClean[i][0].name === t1.name || 
+					teamCrossClean[i][0].name === t2.name ||
+					teamCrossClean[i][1].name === t1.name ||
+					teamCrossClean[i][1].name === t2.name) {
+					teamCrossClean[i] = null;
+				}
+			}
+			teamCrossClean = teamCrossClean.filter((item: Team[]) => item);
+			counter++;
+		}
+		console.log("res");
+		console.log(res);
+		console.log("lower copy")
+		console.log(lowerCopy)
+
+		for (let i = 0; i < round.length; i++) {
+			const t1 = res[i][0];
+			const t2 = res[i][1];
+			if ((this.checkIfPlayedAlready(upperCopy, t1.name) && this.checkIfPlayedAlready(upperCopy, t2.name)) || 
+				(this.checkIfPlayedAlready(lowerCopy, t1.name) && this.checkIfPlayedAlready(lowerCopy, t2.name))) {
+					// const temp = this.gameDiffSort(res[i], 3)
+					const temp = res[i].sort((a, b) => a.initialSeed - b.initialSeed);
+					console.log("HELLO")
+					console.log(temp);
+					round[i].team1 = temp[0];
+					round[i].team2 = temp[1];
+			}
+			else if (this.checkIfPlayedAlready(upper, t1.name)) {
+				round[i].team1 = t2;
+				round[i].team2 = t1;
+			} else if (this.checkIfPlayedAlready(lower, t1.name)) {
+				round[i].team1 = t1;
+				round[i].team2 = t2;
+			} else {
+			}
+		}
 	}
 
 	calculateRound5() {
@@ -266,12 +346,12 @@ export class SwissBracketComponent {
 		let matchIndex = 0;
 		while (remainingTeams.length > 0) {
 			const topTeam = remainingTeams[l];
-			console.log(topTeam);
+			// console.log(topTeam);
 			const alreadyPlayed = this.getTeamsAlreadyPlayed(
 				r1r2r3r4matches,
 				topTeam.name
 			);
-			console.log(alreadyPlayed);
+			// console.log(alreadyPlayed);
 			let botTeam = remainingTeams[r];
 			while (true) {
 				botTeam = remainingTeams[r];
@@ -281,7 +361,7 @@ export class SwissBracketComponent {
 					break;
 				}
 			}
-			console.log(botTeam);
+			// console.log(botTeam);
 			this.round5[matchIndex].team1 = topTeam;
 			this.round5[matchIndex].team2 = botTeam;
 
