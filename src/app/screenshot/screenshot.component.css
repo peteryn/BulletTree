@@ -1,0 +1,24 @@
+.mainDiv {
+    color: #121212;
+    max-width: 1400px;
+	margin: auto;
+    padding: 32px;
+    background-color: #121212;
+}
+
+.screenshotButton {
+    background-color: #808080;
+    color: #ffffff;
+    padding: 6px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 224px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+}

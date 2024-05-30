@@ -1,5 +1,6 @@
 * {
 	color: white;
+	background-color: #121212;
 }
 
 article {
@@ -10,6 +11,7 @@ article {
 	max-width: 1400px;
 	margin: auto;
 	gap: 1em;
+	background-color: #121212;
 }
 
 section {
@@ -23,3 +25,4 @@ section {
 br {
 	margin: 1em 0;
 }
+
