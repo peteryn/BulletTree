@@ -1,17 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { Team } from '../team';
 import { Match } from '../match';
 import { TeamsService } from '../teams.service';
 import { MatchComponent } from '../match/match.component';
+import { Screenshot } from '../screenshot/screenshot.component';
 
 @Component({
 	selector: 'app-swiss-bracket',
 	standalone: true,
-	imports: [MatchComponent],
+	imports: [MatchComponent, Screenshot],
 	templateUrl: './swiss-bracket.component.html',
 	styleUrl: './swiss-bracket.component.css',
 })
+
 export class SwissBracketComponent {
+
 	teamsService = inject(TeamsService);
 	teams = this.teamsService.getAllTeams();
 	round1: Match[] = [];

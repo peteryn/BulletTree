@@ -1,0 +1,8 @@
+<div class="mainDiv" #screenshotDiv>
+    <ng-content></ng-content>
+</div>
+
+<div class="buttonContainer">
+    <button class="screenshotButton" (click)="takeScreenshot()">Take Screenshot and Save</button>
+    <button class="screenshotButton" style="margin-left: 24px;" (click)="copyToClipboard()">Copy Screenshot to Clipboard</button>
+</div>

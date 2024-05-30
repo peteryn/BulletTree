@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { TreeNode } from '../tree-node';
 import { TeamsService } from '../teams.service';
 import { Team } from '../team';
+import { Screenshot } from '../screenshot/screenshot.component';
 
 @Component({
 	selector: 'app-single-elimination-bracket',
 	standalone: true,
-	imports: [MatchComponent, CommonModule],
+	imports: [MatchComponent, CommonModule, Screenshot],
 	templateUrl: './single-elimination-bracket.component.html',
 	styleUrl: './single-elimination-bracket.component.css',
 })

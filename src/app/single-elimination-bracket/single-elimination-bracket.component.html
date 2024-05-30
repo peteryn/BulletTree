@@ -1,23 +1,25 @@
-<article>
-	<section id="quarterfinals">
-		<ng-container *ngFor="let node of quarterFinals">
-			<app-match
-				[match]="node.match"
-				(scoreUpdate)="update($event)"
-			></app-match>
-		</ng-container>
-	</section>
-	<section>
-		<ng-container *ngFor="let node of semiFinals">
-			<app-match
-				[match]="node.match"
-				(scoreUpdate)="update($event)"
-			></app-match>
-		</ng-container>
-	</section>
-	<section>
-		<ng-container *ngFor="let node of grandFinals">
-			<app-match [match]="node.match"></app-match>
-		</ng-container>
-	</section>
-</article>
+<app-screenshot>
+	<article>
+		<section id="quarterfinals">
+			<ng-container *ngFor="let node of quarterFinals">
+				<app-match
+					[match]="node.match"
+					(scoreUpdate)="update($event)"
+				></app-match>
+			</ng-container>
+		</section>
+		<section>
+			<ng-container *ngFor="let node of semiFinals">
+				<app-match
+					[match]="node.match"
+					(scoreUpdate)="update($event)"
+				></app-match>
+			</ng-container>
+		</section>
+		<section>
+			<ng-container *ngFor="let node of grandFinals">
+				<app-match [match]="node.match"></app-match>
+			</ng-container>
+		</section>
+	</article>
+</app-screenshot>
