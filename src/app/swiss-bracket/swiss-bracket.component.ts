@@ -49,6 +49,7 @@ export class SwissBracketComponent {
 		}
 		this.createMatches(this.teams, this.round1);
 		this.updateRound2(undefined);
+		this.updateRound3(undefined);
 	}
 
 	createEmptyMatch(): Match {
@@ -418,12 +419,12 @@ export class SwissBracketComponent {
 		while (l < r) {
 			matches[i].team1 = teams[l];
 			matches[i].team2 = teams[r];
-			matches[i].team1Score = this.gameDiffToScore(
-				teams[l].round1Differential
-			);
-			matches[i].team2Score = this.gameDiffToScore(
-				teams[r].round1Differential
-			);
+			// matches[i].team1Score = this.gameDiffToScore(
+			// 	teams[l].round1Differential
+			// );
+			// matches[i].team2Score = this.gameDiffToScore(
+			// 	teams[r].round1Differential
+			// );
 			l++;
 			r--;
 			i++;
