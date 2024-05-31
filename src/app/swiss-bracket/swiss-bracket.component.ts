@@ -1,14 +1,23 @@
-import { Component, inject, ViewChild, ElementRef } from '@angular/core';
+import {
+	Component,
+	inject,
+	ViewChild,
+	ElementRef,
+	viewChild,
+	Output,
+	EventEmitter,
+} from '@angular/core';
 import { Team } from '../team';
 import { Match } from '../match';
 import { TeamsService } from '../teams.service';
 import { MatchComponent } from '../match/match.component';
 import { Screenshot } from '../screenshot/screenshot.component';
+import { SingleEliminationBracketComponent } from '../single-elimination-bracket/single-elimination-bracket.component';
 
 @Component({
 	selector: 'app-swiss-bracket',
 	standalone: true,
-	imports: [MatchComponent, Screenshot],
+	imports: [MatchComponent, Screenshot, SingleEliminationBracketComponent],
 	templateUrl: './swiss-bracket.component.html',
 	styleUrl: './swiss-bracket.component.css',
 })
@@ -26,6 +35,7 @@ export class SwissBracketComponent {
 	round5: Match[] = [];
 	qualified: (Team | undefined)[] = [];
 	eliminated: Team[] = [];
+	@Output() top8event = new EventEmitter<(Team | undefined)[]>();
 
 	constructor() {
 		for (let i = 0; i < 8; i++) {
@@ -131,6 +141,9 @@ export class SwissBracketComponent {
 		}
 	}
 
+	@ViewChild(SingleEliminationBracketComponent) child:
+		| SingleEliminationBracketComponent
+		| undefined;
 	collectFromRound5(match: Match) {
 		let winners: Team[] = [];
 		let losers: Team[] = [];
@@ -143,6 +156,9 @@ export class SwissBracketComponent {
 			this.qualified[5] = winners[0];
 			this.qualified[6] = winners[1];
 			this.qualified[7] = winners[2];
+			// this.child?.createPlayoffBracket(this.qualified);
+			// this.child?.createMatches(this.qualified);
+			this.top8event.emit(this.qualified);
 			console.log(this.qualified);
 		}
 	}
