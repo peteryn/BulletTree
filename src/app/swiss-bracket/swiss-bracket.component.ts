@@ -24,12 +24,13 @@ export class SwissBracketComponent {
 	round4upper: Match[] = [];
 	round4lower: Match[] = [];
 	round5: Match[] = [];
-	qualified: Team[] = [];
+	qualified: (Team | undefined)[] = [];
 	eliminated: Team[] = [];
 
 	constructor() {
 		for (let i = 0; i < 8; i++) {
 			this.round1.push(this.createEmptyMatch());
+			this.qualified.push(undefined);
 		}
 
 		for (let i = 0; i < 4; i++) {
@@ -130,6 +131,22 @@ export class SwissBracketComponent {
 		}
 	}
 
+	collectFromRound5(match: Match) {
+		let winners: Team[] = [];
+		let losers: Team[] = [];
+
+		match.team1!.round5Differential = match.team1Score - match.team2Score;
+		match.team2!.round5Differential = match.team2Score - match.team1Score;
+		if (this.scoreEnteredInAll(this.round5)) {
+			[winners, losers] = this.getWinnersAndLosers(this.round5);
+			winners = this.gameDiffSort(winners, 5);
+			this.qualified[5] = winners[0];
+			this.qualified[6] = winners[1];
+			this.qualified[7] = winners[2];
+			console.log(this.qualified);
+		}
+	}
+
 	scoreEnteredInAll(round: Match[]): boolean {
 		for (let match of round) {
 			if (match.team1Score === match.team2Score) {
@@ -185,7 +202,9 @@ export class SwissBracketComponent {
 		let upperWinner: Team[];
 		let upperLoser: Team[];
 		[upperWinner, upperLoser] = this.getWinnersAndLosers(this.round3upper);
-		this.qualified.concat(this.gameDiffSort(upperWinner, 3));
+		upperWinner = this.gameDiffSort(upperWinner, 3);
+		this.qualified[0] = upperWinner[0];
+		this.qualified[1] = upperWinner[1];
 		upperLoser = this.gameDiffSort(upperLoser, 3);
 
 		let middleWinner: Team[];
@@ -298,6 +317,10 @@ export class SwissBracketComponent {
 		let upperLoser: Team[];
 		[upperWinner, upperLoser] = this.getWinnersAndLosers(this.round4upper);
 		this.qualified.concat(this.gameDiffSort(upperWinner, 4));
+		upperWinner = this.gameDiffSort(upperWinner, 4);
+		this.qualified[2] = upperWinner[0];
+		this.qualified[3] = upperWinner[1];
+		this.qualified[4] = upperWinner[2];
 		upperLoser = this.gameDiffSort(upperLoser, 4);
 
 		let lowerWinner: Team[];
@@ -426,6 +449,20 @@ export class SwissBracketComponent {
 						b.round2Differential +
 						b.round3Differential +
 						b.round4Differential;
+					break;
+				case 5:
+					aDiff =
+						a.round1Differential +
+						a.round2Differential +
+						a.round3Differential +
+						a.round4Differential +
+						a.round5Differential;
+					bDiff =
+						b.round1Differential +
+						b.round2Differential +
+						b.round3Differential +
+						b.round4Differential +
+						b.round5Differential;
 					break;
 				default:
 					aDiff = 0;
