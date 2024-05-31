@@ -22,28 +22,16 @@ export class SingleEliminationBracketComponent {
 	grandFinalTeams: string[] = [];
 
 	teamsService = inject(TeamsService);
-	// teams = this.teamsService.get8Teams();
-	@Input() teams: (Team | undefined)[] = [];
+	teams: (Team | undefined)[] = [];
 
 	matchIdToNode = new Map<number, TreeNode>();
 
 	constructor() {
-		console.log('why');
-		console.log(this.teams);
-		const grandFinal = this.createPlayoffBracket(this.teams);
+		this.createPlayoffBracket(this.teams);
 	}
 
 	// TODO remove and use the one inside teams service
 	createMatches(teams: (Team | undefined)[]) {
-		// for (let i = 0; i < teams.length; i += 2) {
-		// 	matches.push({
-		// 		team1: teams[i],
-		// 		team2: teams[i + 1],
-		// 		team1Score: 0,
-		// 		team2Score: 0,
-		// 		matchId: Math.floor(Math.random() * 100000), // TODO, figure out a better way to create ids
-		// 	});
-		// }
 		let l = 0;
 		let r = teams.length - 1;
 		let i = 0;
@@ -69,10 +57,6 @@ export class SingleEliminationBracketComponent {
 		this.quarterFinals[1].match = tempMatches[3];
 		this.quarterFinals[2].match = tempMatches[1];
 		this.quarterFinals[3].match = tempMatches[2];
-		// matches.push(tempMatches[0]);
-		// matches.push(tempMatches[3]);
-		// matches.push(tempMatches[1]);
-		// matches.push(tempMatches[2]);
 	}
 
 	// TODO: bug, users inputting scoreline before there is a team causes team to be declared winner without updating bracket
@@ -112,7 +96,6 @@ export class SingleEliminationBracketComponent {
 		]);
 
 		const matches: Match[] = [];
-		// this.createMatches(teams, matches);
 		for (let i = 0; i < matches.length; i++) {
 			this.quarterFinals[i].match = matches[i];
 			this.matchIdToNode.set(matches[i].matchId, this.quarterFinals[i]);

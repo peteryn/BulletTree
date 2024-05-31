@@ -141,13 +141,9 @@ export class SwissBracketComponent {
 		}
 	}
 
-	@ViewChild(SingleEliminationBracketComponent) child:
-		| SingleEliminationBracketComponent
-		| undefined;
 	collectFromRound5(match: Match) {
 		let winners: Team[] = [];
 		let losers: Team[] = [];
-
 		match.team1!.round5Differential = match.team1Score - match.team2Score;
 		match.team2!.round5Differential = match.team2Score - match.team1Score;
 		if (this.scoreEnteredInAll(this.round5)) {
@@ -156,10 +152,7 @@ export class SwissBracketComponent {
 			this.qualified[5] = winners[0];
 			this.qualified[6] = winners[1];
 			this.qualified[7] = winners[2];
-			// this.child?.createPlayoffBracket(this.qualified);
-			// this.child?.createMatches(this.qualified);
 			this.top8event.emit(this.qualified);
-			console.log(this.qualified);
 		}
 	}
 
