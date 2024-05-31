@@ -721,7 +721,7 @@ export class TeamsService {
 	];
 
 	constructor() {
-		this.teams = this.na_qual5;
+		this.teams = this.na_qual6;
 		// this.teams = this.na_qual6_r1;
 	}
 
