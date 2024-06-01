@@ -80,10 +80,8 @@ export class SwissBracketComponent {
 
 	updateRound2(match: Match | undefined) {
 		if (match !== undefined) {
-			match.team1!.round1Differential =
-				match.team1Score - match.team2Score;
-			match.team2!.round1Differential =
-				match.team2Score - match.team1Score;
+			match.team1!.round1Differential = match.team1Score - match.team2Score;
+			match.team2!.round1Differential = match.team2Score - match.team1Score;
 		}
 		if (this.scoreEnteredInAll(this.round1)) {
 			// calculate next swiss round
@@ -96,15 +94,10 @@ export class SwissBracketComponent {
 
 	updateRound3(match: Match | undefined) {
 		if (match !== undefined) {
-			match.team1!.round2Differential =
-				match.team1Score - match.team2Score;
-			match.team2!.round2Differential =
-				match.team2Score - match.team1Score;
+			match.team1!.round2Differential = match.team1Score - match.team2Score;
+			match.team2!.round2Differential = match.team2Score - match.team1Score;
 		}
-		if (
-			this.scoreEnteredInAll(this.round2upper) &&
-			this.scoreEnteredInAll(this.round2lower)
-		) {
+		if (this.scoreEnteredInAll(this.round2upper) && this.scoreEnteredInAll(this.round2lower)) {
 			this.calculateRound3();
 		} else {
 		}
@@ -112,10 +105,8 @@ export class SwissBracketComponent {
 
 	updateRound4(match: Match | undefined) {
 		if (match !== undefined) {
-			match.team1!.round3Differential =
-				match.team1Score - match.team2Score;
-			match.team2!.round3Differential =
-				match.team2Score - match.team1Score;
+			match.team1!.round3Differential = match.team1Score - match.team2Score;
+			match.team2!.round3Differential = match.team2Score - match.team1Score;
 		}
 		if (
 			this.scoreEnteredInAll(this.round3lower) &&
@@ -128,15 +119,10 @@ export class SwissBracketComponent {
 
 	updateRound5(match: Match | undefined) {
 		if (match !== undefined) {
-			match.team1!.round4Differential =
-				match.team1Score - match.team2Score;
-			match.team2!.round4Differential =
-				match.team2Score - match.team1Score;
+			match.team1!.round4Differential = match.team1Score - match.team2Score;
+			match.team2!.round4Differential = match.team2Score - match.team1Score;
 		}
-		if (
-			this.scoreEnteredInAll(this.round4upper) &&
-			this.scoreEnteredInAll(this.round4lower)
-		) {
+		if (this.scoreEnteredInAll(this.round4upper) && this.scoreEnteredInAll(this.round4lower)) {
 			this.calculateRound5();
 		}
 	}
@@ -178,24 +164,15 @@ export class SwissBracketComponent {
 	calculateRound3() {
 		let upperWinners: Team[] = [];
 		let upperLosers: Team[] = [];
-		[upperWinners, upperLosers] = this.getWinnersAndLosers(
-			this.round2upper
-		);
-		this.createMatches(
-			this.gameDiffSort(upperWinners, 2),
-			this.round3upper
-		);
+		[upperWinners, upperLosers] = this.getWinnersAndLosers(this.round2upper);
+		this.createMatches(this.gameDiffSort(upperWinners, 2), this.round3upper);
 
 		let lowerWinners: Team[] = [];
 		let lowerLosers: Team[] = [];
-		[lowerWinners, lowerLosers] = this.getWinnersAndLosers(
-			this.round2lower
-		);
+		[lowerWinners, lowerLosers] = this.getWinnersAndLosers(this.round2lower);
 		this.createMatches(this.gameDiffSort(lowerLosers, 2), this.round3lower);
 
-		const r1Andr2Matches = this.round1
-			.concat(this.round2lower)
-			.concat(this.round2upper);
+		const r1Andr2Matches = this.round1.concat(this.round2lower).concat(this.round2upper);
 
 		const upperLosersSorted = this.gameDiffSort(upperLosers, 2);
 		const lowerWinnersSorted = this.gameDiffSort(lowerWinners, 2);
@@ -218,9 +195,7 @@ export class SwissBracketComponent {
 
 		let middleWinner: Team[];
 		let middleLoser: Team[];
-		[middleWinner, middleLoser] = this.getWinnersAndLosers(
-			this.round3middle
-		);
+		[middleWinner, middleLoser] = this.getWinnersAndLosers(this.round3middle);
 		middleWinner = this.gameDiffSort(middleWinner, 3);
 		middleLoser = this.gameDiffSort(middleLoser, 3);
 
@@ -238,84 +213,65 @@ export class SwissBracketComponent {
 			.concat(this.round3upper);
 
 		upperLoser.push(middleWinner.splice(0, 1)[0]);
-		this.crossProductMatches(
-			r1r2r3matches,
-			upperLoser,
-			middleWinner,
-			this.round4upper
-		);
+		this.cartesianProductMatches(r1r2r3matches, upperLoser, middleWinner, this.round4upper);
 
-		lowerWinner = middleLoser
-			.splice(middleLoser.length - 1, 1)
-			.concat(lowerWinner);
-		this.crossProductMatches(
-			r1r2r3matches,
-			this.gameDiffSort(middleLoser, 3),
-			this.gameDiffSort(lowerWinner, 3),
-			this.round4lower
-		);
+		lowerWinner = middleLoser.splice(middleLoser.length - 1, 1).concat(lowerWinner);
+		this.cartesianProductMatches(r1r2r3matches, middleLoser, lowerWinner, this.round4lower);
 	}
 
-	crossProductMatches(
-		allMatches: Match[],
-		upper: Team[],
-		lower: Team[],
-		round: Match[]
-	) {
-		const cartesianProduct = (a: Team[], b: Team[]) =>
-			a.flatMap((x) => b.map((y) => [x, y]));
+	cartesianProductMatches(allMatches: Match[], upper: Team[], lower: Team[], round: Match[]) {
+		const cartesianProduct = (a: Team[], b: Team[]) => a.flatMap((x) => b.map((y) => [x, y]));
 		const upperLowerCross = cartesianProduct(upper, lower.reverse());
 		let upperLowerCrossCopy = JSON.parse(JSON.stringify(upperLowerCross));
 		for (let i = 0; i < upperLowerCrossCopy.length; i++) {
 			const t1 = upperLowerCrossCopy[i][0];
 			const t2 = upperLowerCrossCopy[i][1];
-			const alreadyPlayed = this.getTeamsAlreadyPlayed(
-				allMatches,
-				t1.name
-			);
+			const alreadyPlayed = this.getTeamsAlreadyPlayed(allMatches, t1.name);
 			if (this.checkIfPlayedAlready(alreadyPlayed, t2.name)) {
 				upperLowerCrossCopy[i] = null;
 			}
 		}
-		upperLowerCrossCopy = upperLowerCrossCopy.filter(
-			(item: Team[]) => item
-		);
-		let counter = 0;
+		upperLowerCrossCopy = upperLowerCrossCopy.filter((item: Team[]) => item);
 		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
-		let res: Team[][] = [];
-		let numResets = 1;
-		while (counter < 3) {
-			if (teamCrossClean.length === 0) {
-				teamCrossClean = JSON.parse(
-					JSON.stringify(upperLowerCrossCopy)
-				);
-				teamCrossClean.splice(0, numResets);
-				numResets++;
-				counter = 0;
-				res = [];
+		const stack: any[] = [];
+		let invalidIndexes: number[] = [];
+		let index = 0;
+		while (stack.length < 3) {
+			if (index >= teamCrossClean.length) {
+				let badMatch = stack.pop();
+				invalidIndexes = badMatch.invalidIndexes;
+				invalidIndexes.push(badMatch.index);
+				index = 0;
 			}
 
-			const t1 = teamCrossClean[0][0];
-			const t2 = teamCrossClean[0][1];
-			res.push(teamCrossClean.splice(0, 1)[0]);
-
-			// remove team pairs that have t1 or t2
+			if (invalidIndexes.indexOf(index) != -1) {
+				index++;
+				continue;
+			}
+			const invalidIndexesCopy = structuredClone(invalidIndexes);
+			const match = teamCrossClean[index];
+			const team1 = match[0];
+			const team2 = match[1];
 			for (let i = 0; i < teamCrossClean.length; i++) {
 				if (
-					teamCrossClean[i][0].name === t1.name ||
-					teamCrossClean[i][0].name === t2.name ||
-					teamCrossClean[i][1].name === t1.name ||
-					teamCrossClean[i][1].name === t2.name
+					teamCrossClean[i][0].name === team1.name ||
+					teamCrossClean[i][0].name === team2.name ||
+					teamCrossClean[i][1].name === team1.name ||
+					teamCrossClean[i][1].name === team2.name
 				) {
-					teamCrossClean[i] = null;
+					invalidIndexes.push(i);
 				}
 			}
-			teamCrossClean = teamCrossClean.filter((item: Team[]) => item);
-			counter++;
+
+			stack.push({
+				match: match,
+				invalidIndexes: invalidIndexesCopy,
+				index: index,
+			});
 		}
 		for (let i = 0; i < round.length; i++) {
-			const t1 = res[i][0];
-			const t2 = res[i][1];
+			const t1 = stack[i].match[0];
+			const t2 = stack[i].match[1];
 			round[i].team1 = t1;
 			round[i].team2 = t2;
 		}
@@ -346,12 +302,7 @@ export class SwissBracketComponent {
 			.concat(this.round4upper)
 			.concat(this.round4lower);
 
-		this.crossProductMatches(
-			r1r2r3r4matches,
-			upperLoser,
-			lowerWinner,
-			this.round5
-		);
+		this.cartesianProductMatches(r1r2r3r4matches, upperLoser, lowerWinner, this.round5);
 	}
 
 	createComplexMatches(
@@ -364,10 +315,7 @@ export class SwissBracketComponent {
 		const map = [3, 2, 1, 0];
 		for (let i = 0; i < upper.length; i++) {
 			const top = upper[i];
-			const topMatchHistory = this.getTeamsAlreadyPlayed(
-				allMatches,
-				top.name
-			);
+			const topMatchHistory = this.getTeamsAlreadyPlayed(allMatches, top.name);
 			for (let j = 0; j < lower.length; j++) {
 				const bot = lower[j];
 				if (bot === undefined) {
@@ -438,14 +386,8 @@ export class SwissBracketComponent {
 					bDiff = b.round1Differential + b.round2Differential;
 					break;
 				case 3:
-					aDiff =
-						a.round1Differential +
-						a.round2Differential +
-						a.round3Differential;
-					bDiff =
-						b.round1Differential +
-						b.round2Differential +
-						b.round3Differential;
+					aDiff = a.round1Differential + a.round2Differential + a.round3Differential;
+					bDiff = b.round1Differential + b.round2Differential + b.round3Differential;
 					break;
 				case 4:
 					aDiff =

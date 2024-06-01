@@ -1,4 +1,5 @@
-import swissScores from '../fixtures/swiss_scores_regional6_eu.json';
+// import swissScores from '../fixtures/swiss_scores_regional6_eu.json';
+import swissScores from '../fixtures/swiss_scores_regional4.json';
 // swiss_scores_1 NA Regional #4 Edge Case
 // swiss_scores_2 Default 3-0 for all teams
 

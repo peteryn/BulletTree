@@ -721,8 +721,11 @@ export class TeamsService {
 	];
 
 	constructor() {
-		this.teams = this.eu_qual6;
+		this.teams = this.na_qual4;
+		// this.teams = this.na_qual5;
+		// this.teams = this.na_qual6;
 		// this.teams = this.na_qual6_r1;
+		// this.teams = this.eu_qual6;
 	}
 
 	getAllTeams(): Team[] {
