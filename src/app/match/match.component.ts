@@ -10,7 +10,13 @@ import { Match } from '../match';
 	styleUrl: './match.component.css',
 })
 export class MatchComponent {
-	@Input() match!: Match;
+	@Input() match: Match = {
+		team1: undefined,
+		team2: undefined,
+		team1Score: 0,
+		team2Score: 0,
+		matchId: -1,
+	};
 
 	@Output() scoreUpdate = new EventEmitter<Match>();
 
