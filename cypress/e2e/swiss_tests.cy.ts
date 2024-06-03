@@ -4,7 +4,7 @@ import swissScores from '../fixtures/swiss_scores_regional4.json';
 // swiss_scores_2 Default 3-0 for all teams
 
 it('Autopopulate Swiss', () => {
-	cy.visit('/swiss');
+	cy.visit('/');
 	cy.viewport(1500, 1000);
 
 	// Ensure that inputs are available in the DOM

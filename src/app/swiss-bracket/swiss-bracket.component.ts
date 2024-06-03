@@ -89,6 +89,41 @@ export class SwissBracketComponent {
 			this.updateRound3(undefined);
 		} else {
 			// TODO: clear all later stage matches
+			if (this.round2upper[0].team1 !== undefined) {
+				this.clearRound('round2Differential', this.round2lower, this.round2upper);
+			}
+			if (this.round3upper[0].team1 !== undefined) {
+				this.clearRound(
+					'round3Differential',
+					this.round3upper,
+					this.round3middle,
+					this.round3lower
+				);
+			}
+			if (this.round4upper[0].team1 !== undefined) {
+				this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			}
+			if (this.round5[0].team1 !== undefined) {
+				this.clearRound('round5Differential', this.round5);
+			}
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
+		}
+	}
+
+	clearRound<T extends keyof Team>(differentialToClear: T, ...rounds: Match[][]) {
+		for (let round of rounds) {
+			for (let match of round) {
+				if (match.team1 === undefined || match.team2 === undefined) {
+					continue;
+				}
+				match.team1[differentialToClear] = 0 as any;
+				match.team2[differentialToClear] = 0 as any;
+				match.team1 = undefined;
+				match.team2 = undefined;
+				match.team1Score = 0;
+				match.team2Score = 0;
+			}
 		}
 	}
 
