@@ -27,6 +27,7 @@ import { TeamsService } from './teams.service';
 export class AppComponent {
 	title = 'bulletTree';
 	teamService = inject(TeamsService);
+	teams = this.teamService.getAllTeams();
 
 	@ViewChild(SingleEliminationBracketComponent) child:
 		| SingleEliminationBracketComponent
