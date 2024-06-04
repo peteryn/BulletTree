@@ -1,7 +1,10 @@
 <app-navbar></app-navbar>
 <main>
 	<app-screenshot>
-		<app-swiss-bracket (top8event)="update($event)"></app-swiss-bracket>
+		<app-swiss-bracket
+			(top8event)="update($event)"
+			[teams]="teamService.getAllTeams()"
+		></app-swiss-bracket>
 		<app-single-elimination-bracket></app-single-elimination-bracket>
 	</app-screenshot>
 </main>

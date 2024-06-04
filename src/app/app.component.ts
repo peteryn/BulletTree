@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MatchComponent } from './match/match.component';
@@ -7,6 +7,7 @@ import { SwissBracketComponent } from './swiss-bracket/swiss-bracket.component';
 import { SingleEliminationBracketComponent } from './single-elimination-bracket/single-elimination-bracket.component';
 import { Screenshot } from './screenshot/screenshot.component';
 import { Team } from './team';
+import { TeamsService } from './teams.service';
 
 @Component({
 	selector: 'app-root',
@@ -25,6 +26,7 @@ import { Team } from './team';
 })
 export class AppComponent {
 	title = 'bulletTree';
+	teamService = inject(TeamsService);
 
 	@ViewChild(SingleEliminationBracketComponent) child:
 		| SingleEliminationBracketComponent

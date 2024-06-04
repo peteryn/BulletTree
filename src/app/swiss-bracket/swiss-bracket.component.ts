@@ -4,6 +4,7 @@ import {
 	ViewChild,
 	ElementRef,
 	viewChild,
+	Input,
 	Output,
 	EventEmitter,
 } from '@angular/core';
@@ -23,7 +24,8 @@ import { SingleEliminationBracketComponent } from '../single-elimination-bracket
 })
 export class SwissBracketComponent {
 	teamsService = inject(TeamsService);
-	teams = this.teamsService.getAllTeams();
+	// teams = this.teamsService.getAllTeams();
+	@Input() teams: Team[] = [];
 	round1: Match[] = [];
 	round2upper: Match[] = [];
 	round2lower: Match[] = [];
@@ -36,6 +38,10 @@ export class SwissBracketComponent {
 	qualified: (Team | undefined)[] = [];
 	eliminated: Team[] = [];
 	@Output() top8event = new EventEmitter<(Team | undefined)[]>();
+
+	ngOnChanges() {
+		this.createMatches(this.teams, this.round1);
+	}
 
 	constructor() {
 		for (let i = 0; i < 8; i++) {
@@ -59,7 +65,6 @@ export class SwissBracketComponent {
 			this.round3upper.push(this.createEmptyMatch());
 			this.round3lower.push(this.createEmptyMatch());
 		}
-		this.createMatches(this.teams, this.round1);
 		this.updateRound2(undefined);
 		this.updateRound3(undefined);
 	}
