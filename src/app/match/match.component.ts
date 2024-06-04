@@ -18,6 +18,8 @@ export class MatchComponent {
 		matchId: -1,
 	};
 
+	@Input() round: string = 'stf';
+
 	@Output() scoreUpdate = new EventEmitter<Match>();
 
 	update(t1Score: string, t2Score: string) {
