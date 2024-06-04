@@ -25,9 +25,10 @@ export class SingleEliminationBracketComponent {
 	teams: (Team | undefined)[] = [];
 
 	matchIdToNode = new Map<number, TreeNode>();
+	grandFinal: TreeNode | undefined = undefined;
 
 	constructor() {
-		this.createPlayoffBracket(this.teams);
+		this.grandFinal = this.createPlayoffBracket(this.teams);
 	}
 
 	// TODO remove and use the one inside teams service
@@ -35,7 +36,7 @@ export class SingleEliminationBracketComponent {
 		let l = 0;
 		let r = teams.length - 1;
 		let i = 0;
-		const tempMatches: Match[] = [];
+		let tempMatches: Match[] = [];
 		while (l < r) {
 			tempMatches.push({
 				team1: teams[l],
@@ -49,14 +50,13 @@ export class SingleEliminationBracketComponent {
 			i++;
 		}
 
-		tempMatches[0].matchId = this.quarterFinals[0].match.matchId;
-		tempMatches[1].matchId = this.quarterFinals[3].match.matchId;
-		tempMatches[2].matchId = this.quarterFinals[2].match.matchId;
-		tempMatches[3].matchId = this.quarterFinals[1].match.matchId;
-		this.quarterFinals[0].match = tempMatches[0];
-		this.quarterFinals[1].match = tempMatches[3];
-		this.quarterFinals[2].match = tempMatches[1];
-		this.quarterFinals[3].match = tempMatches[2];
+		let temp = tempMatches.splice(1, 3);
+		let temp2 = temp.splice(2, 1);
+		tempMatches = tempMatches.concat(temp2, temp);
+		for (let i = 0; i < this.quarterFinals.length; i++) {
+			this.quarterFinals[i].match.team1 = tempMatches[i].team1;
+			this.quarterFinals[i].match.team2 = tempMatches[i].team2;
+		}
 	}
 
 	// TODO: bug, users inputting scoreline before there is a team causes team to be declared winner without updating bracket
@@ -73,9 +73,15 @@ export class SingleEliminationBracketComponent {
 	}
 
 	updateParent(node: TreeNode, team: Team | undefined) {
+		// console.log('node');
+		// console.log(node);
 		if (node.onParentLeft) {
+			// console.log('updated parent team1');
+			// console.log(node.parent);
 			node.parent!.match.team1 = team;
 		} else {
+			// console.log('updated parent team2');
+			// console.log(node.parent);
 			node.parent!.match.team2 = team;
 		}
 	}
@@ -89,11 +95,7 @@ export class SingleEliminationBracketComponent {
 			match: this.createEmptyMatch(),
 		};
 
-		this.dfs(grandFinal, 0, 2, [
-			this.grandFinals,
-			this.semiFinals,
-			this.quarterFinals,
-		]);
+		this.dfs(grandFinal, 0, 2, [this.grandFinals, this.semiFinals, this.quarterFinals]);
 
 		const matches: Match[] = [];
 		for (let i = 0; i < matches.length; i++) {
@@ -127,12 +129,7 @@ export class SingleEliminationBracketComponent {
 		};
 	}
 
-	dfs(
-		curr: TreeNode,
-		currDepth: number,
-		maxDepth: number,
-		layers: TreeNode[][]
-	) {
+	dfs(curr: TreeNode, currDepth: number, maxDepth: number, layers: TreeNode[][]) {
 		layers[currDepth].push(curr);
 		if (currDepth === maxDepth) {
 			return;
