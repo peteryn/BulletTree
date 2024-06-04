@@ -9,7 +9,7 @@ export class TeamsService {
 	teams: Team[] = [];
 	na_qual4: Team[] = [
 		{
-			name: 'G2 Stide',
+			name: 'G2 Stride',
 			initialSeed: 1,
 			logo: './assets/images/g2.png',
 			gameDifferential: 0,

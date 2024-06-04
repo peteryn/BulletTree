@@ -2,7 +2,7 @@
 	<tr>
 		<td class="team" [class.winner]="match.team1Score > match.team2Score">
 			@if (match.team1) {
-			<div class="team-section">
+			<div class="team-section" [attr.data-test-team]="match.team1!.name">
 				<!-- TODO: fix logo height and width for all teams so it doesn't expand outside of cell -->
 				<img width="20px" src="{{ match.team1!.logo }}" alt="" />
 				{{ match.team1!.name }}
@@ -24,7 +24,7 @@
 	<tr>
 		<td class="team" [class.winner]="match.team1Score < match.team2Score">
 			@if (match.team2) {
-			<div class="team-section">
+			<div class="team-section" [attr.data-test-team]="match.team2!.name">
 				<img width="20px" src="{{ match.team2!.logo }}" alt="" />
 				{{ match.team2!.name }}
 			</div>
