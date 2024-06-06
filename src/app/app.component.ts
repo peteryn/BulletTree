@@ -8,6 +8,7 @@ import { SingleEliminationBracketComponent } from './single-elimination-bracket/
 import { Screenshot } from './screenshot/screenshot.component';
 import { Team } from './team';
 import { TeamsService } from './teams.service';
+import { BracketContainerComponent } from './bracket-container/bracket-container.component';
 
 @Component({
 	selector: 'app-root',
@@ -19,6 +20,7 @@ import { TeamsService } from './teams.service';
 		CommonModule,
 		SwissBracketComponent,
 		SingleEliminationBracketComponent,
+		BracketContainerComponent,
 		Screenshot,
 	],
 	templateUrl: './app.component.html',

@@ -732,6 +732,20 @@ export class TeamsService {
 		return this.teams;
 	}
 
+	getTeamsByTournament(tournament: string) {
+		if (tournament === 'na4') {
+			return this.na_qual4;
+		} else if (tournament === 'na5') {
+			return this.na_qual5;
+		} else if (tournament === 'na6') {
+			return this.na_qual6;
+		} else if (tournament === 'eu6') {
+			return this.eu_qual6;
+		} else {
+			return [];
+		}
+	}
+
 	get8Teams(): Team[] {
 		const res = [];
 		for (let i = 0; i < 8; i++) {

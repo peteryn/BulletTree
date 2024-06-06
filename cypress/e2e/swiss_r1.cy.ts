@@ -82,7 +82,7 @@ it('Check Round 1', () => {
 	];
 	const semiFinals = ['G2 Stride', 'Spacestation Gaming', 'Snowmen', 'Gen.G'];
 	const finals = ['G2 Stride', 'Gen.G'];
-	cy.visit('/');
+	cy.visit('/bracket/na4');
 	cy.viewport(1500, 1000);
 
 	const values: (string | undefined)[] = [];
