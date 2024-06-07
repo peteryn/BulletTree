@@ -1,6 +1,56 @@
-import swissScores from '../fixtures/swiss_scores_regional4.json';
+import na4 from '../fixtures/swiss_scores_regional4.json';
+import na5 from '../fixtures/swiss_scores_regional5.json';
 
-it('Check Round 1', () => {
+function getAndCheck(
+	swissScores: any,
+	r1: string[],
+	r2: string[],
+	r3: string[],
+	r4: string[],
+	r5: string[],
+	qf: string[],
+	sf: string[],
+	gf: string[]
+) {
+	const values: (string | undefined)[] = [];
+	cy.get('input[name^="team"]')
+		.should('exist')
+		.then((inputs) => {
+			var keyValue = 1;
+			cy.wrap(inputs).each((input, index) => {
+				const fixture = swissScores[`${keyValue}`];
+				keyValue += 1;
+				cy.wrap(input).clear();
+				cy.wrap(input).type(fixture).blur();
+			});
+		});
+
+	cy.get('[data-test-team]')
+		.each(($el) => {
+			values.push($el.attr('data-test-team'));
+		})
+		.then(() => {
+			const testR1 = values.splice(0, 16);
+			const testR2 = values.splice(0, 16);
+			const testR3 = values.splice(0, 16);
+			const testR4 = values.splice(0, 12);
+			const testR5 = values.splice(0, 6);
+			const testQuarterFinals = values.splice(0, 8);
+			const testSemiFinals = values.splice(0, 4);
+			const testFinals = values.splice(0, 2);
+
+			expect(testR1).to.deep.equal(r1);
+			expect(testR2).to.deep.equal(r2);
+			expect(testR3).to.deep.equal(r3);
+			expect(testR4).to.deep.equal(r4);
+			expect(testR5).to.deep.equal(r5);
+			expect(testQuarterFinals).to.deep.equal(qf);
+			expect(testSemiFinals).to.deep.equal(sf);
+			expect(testFinals).to.deep.equal(gf);
+		});
+}
+
+it('North American Open Qualifer 4', () => {
 	const round1 = [
 		'G2 Stride',
 		'Cold',
@@ -13,7 +63,7 @@ it('Check Round 1', () => {
 		'TSM',
 		'Snowmen',
 		'M80',
-		'Cloud 9',
+		'Cloud9',
 		'Spacestation Gaming',
 		'Shopify Rebellion',
 		'Moist Esports',
@@ -34,7 +84,7 @@ it('Check Round 1', () => {
 		'Luminosity Gaming',
 		'NRG',
 		'Cheers',
-		'Cloud 9',
+		'Cloud9',
 		'Deleted XD',
 	];
 	const round3 = [
@@ -45,7 +95,7 @@ it('Check Round 1', () => {
 		'OG',
 		'Luminosity Gaming',
 		'Netherlamericanada',
-		'Cloud 9',
+		'Cloud9',
 		'Spacestation Gaming',
 		'NRG',
 		'Moist Esports',
@@ -61,7 +111,7 @@ it('Check Round 1', () => {
 		'M80',
 		'Spacestation Gaming',
 		'Shopify Rebellion',
-		'Cloud 9',
+		'Cloud9',
 		'NRG',
 		'Deleted XD',
 		'Luminosity Gaming',
@@ -69,14 +119,14 @@ it('Check Round 1', () => {
 		'Netherlamericanada',
 		'TSM',
 	];
-	const round5 = ['Gen.G', 'Luminosity Gaming', 'Cloud 9', 'NRG', 'M80', 'TSM'];
+	const round5 = ['Gen.G', 'Luminosity Gaming', 'Cloud9', 'NRG', 'M80', 'TSM'];
 	const quarterFinals = [
 		'G2 Stride',
 		'M80',
 		'OG',
 		'Spacestation Gaming',
 		'Snowmen',
-		'Cloud 9',
+		'Cloud9',
 		'Shopify Rebellion',
 		'Gen.G',
 	];
@@ -84,49 +134,99 @@ it('Check Round 1', () => {
 	const finals = ['G2 Stride', 'Gen.G'];
 	cy.visit('/bracket/na4');
 	cy.viewport(1500, 1000);
+	getAndCheck(na4, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
+});
 
-	const values: (string | undefined)[] = [];
-	// cy.get('[data-test-team]')
-	// 	.each(($el) => {
-	// 		values.push($el.attr('data-test-team'));
-	// 	})
-	// 	.then(() => {
-	// 		expect(values).to.deep.equal(round1);
-	// 	});
-
-	cy.get('input[name^="team"]')
-		.should('exist')
-		.then((inputs) => {
-			var keyValue = 1;
-			cy.wrap(inputs).each((input, index) => {
-				const fixture = swissScores[`${keyValue}`];
-				keyValue += 1;
-				cy.wrap(input).clear();
-				cy.wrap(input).type(fixture);
-			});
-		});
-
-	cy.get('[data-test-team]')
-		.each(($el) => {
-			values.push($el.attr('data-test-team'));
-		})
-		.then(() => {
-			const testR1 = values.splice(0, 16);
-			const testR2 = values.splice(0, 16);
-			const testR3 = values.splice(0, 16);
-			const testR4 = values.splice(0, 12);
-			const testR5 = values.splice(0, 6);
-			const testQuarterFinals = values.splice(0, 8);
-			const testSemiFinals = values.splice(0, 4);
-			const testFinals = values.splice(0, 2);
-
-			expect(testR1).to.deep.equal(round1);
-			expect(testR2).to.deep.equal(round2);
-			expect(testR3).to.deep.equal(round3);
-			expect(testR4).to.deep.equal(round4);
-			expect(testR5).to.deep.equal(round5);
-			expect(testQuarterFinals).to.deep.equal(quarterFinals);
-			expect(testSemiFinals).to.deep.equal(semiFinals);
-			expect(testFinals).to.deep.equal(finals);
-		});
+it('North American Open Qualifer 5', () => {
+	const round1 = [
+		'G2 Stride',
+		'BDW',
+		'Gen.G',
+		'Spate Esports',
+		'Luminosity Gaming',
+		'Netherlamericanada',
+		'OG',
+		'Dignitas',
+		'Spacestation Gaming',
+		'NRG',
+		'M80',
+		'Cloud9',
+		'TSM',
+		'Shopify Rebellion',
+		'Snowmen',
+		'Moist Esports',
+	];
+	const round2 = [
+		'G2 Stride',
+		'M80',
+		'Gen.G',
+		'OG',
+		'Luminosity Gaming',
+		'Snowmen',
+		'Spacestation Gaming',
+		'TSM',
+		'Cloud9',
+		'BDW',
+		'Dignitas',
+		'Spate Esports',
+		'Moist Esports',
+		'Netherlamericanada',
+		'Shopify Rebellion',
+		'NRG',
+	];
+	const round3 = [
+		'Gen.G',
+		'M80',
+		'Luminosity Gaming',
+		'Spacestation Gaming',
+		'G2 Stride',
+		'Netherlamericanada',
+		'TSM',
+		'Cloud9',
+		'Snowmen',
+		'Dignitas',
+		'OG',
+		'Shopify Rebellion',
+		'Moist Esports',
+		'Spate Esports',
+		'NRG',
+		'BDW',
+	];
+	const round4 = [
+		'Gen.G',
+		'Snowmen',
+		'Luminosity Gaming',
+		'OG',
+		'G2 Stride',
+		'TSM',
+		'Dignitas',
+		'NRG',
+		'Shopify Rebellion',
+		'Moist Esports',
+		'Cloud9',
+		'Netherlamericanada',
+	];
+	const round5 = [
+		'Luminosity Gaming',
+		'Cloud9',
+		'Snowmen',
+		'Shopify Rebellion',
+		'TSM',
+		'Dignitas',
+	];
+	const quarterFinals = [
+		'Spacestation Gaming',
+		'Dignitas',
+		'Gen.G',
+		'OG',
+		'M80',
+		'Cloud9',
+		'G2 Stride',
+		'Shopify Rebellion',
+	];
+	const semiFinals = ['Spacestation Gaming', 'OG', 'Cloud9', 'G2 Stride'];
+	const finals = ['Spacestation Gaming', 'G2 Stride'];
+	cy.visit('/bracket/na5');
+	cy.viewport(1500, 1000);
+	getAndCheck(na5, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
 });

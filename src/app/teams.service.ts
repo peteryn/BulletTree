@@ -119,7 +119,7 @@ export class TeamsService {
 			round5Differential: 0,
 		},
 		{
-			name: 'Cloud 9',
+			name: 'Cloud9',
 			initialSeed: 11,
 			logo: './assets/images/cloud9.png',
 			gameDifferential: 0,
@@ -187,7 +187,7 @@ export class TeamsService {
 	];
 	na_qual5: Team[] = [
 		{
-			name: 'G2 Stide',
+			name: 'G2 Stride',
 			initialSeed: 1,
 			logo: './assets/images/g2.png',
 			gameDifferential: 0,
@@ -365,7 +365,7 @@ export class TeamsService {
 	];
 	na_qual6: Team[] = [
 		{
-			name: 'G2 Stide',
+			name: 'G2 Stride',
 			initialSeed: 1,
 			logo: './assets/images/g2.png',
 			gameDifferential: 0,
@@ -431,7 +431,7 @@ export class TeamsService {
 			round5Differential: 0,
 		},
 		{
-			name: 'Cloud 9',
+			name: 'Cloud9',
 			initialSeed: 7,
 			logo: './assets/images/cloud9.png',
 			gameDifferential: 0,
