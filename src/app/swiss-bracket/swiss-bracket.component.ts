@@ -273,6 +273,7 @@ export class SwissBracketComponent {
 		}
 		upperLowerCrossCopy = upperLowerCrossCopy.filter((item: Team[]) => item);
 		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
+		console.log(teamCrossClean);
 		const stack: any[] = [];
 		let invalidIndexes: number[] = [];
 		let index = 0;

@@ -1,5 +1,6 @@
 import na4 from '../fixtures/swiss_scores_regional4.json';
 import na5 from '../fixtures/swiss_scores_regional5.json';
+import na6 from '../fixtures/swiss_scores_regional6.json';
 
 function getAndCheck(
 	swissScores: any,
@@ -229,4 +230,91 @@ it('North American Open Qualifer 5', () => {
 	cy.visit('/bracket/na5');
 	cy.viewport(1500, 1000);
 	getAndCheck(na5, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
+});
+
+it('North American Open Qualifer 6', () => {
+	const round1 = [
+		'G2 Stride',
+		'Incorrect',
+		'Gen.G',
+		'GBuffo',
+		'OG',
+		'Zero2One',
+		'Spacestation Gaming',
+		'Spate Esports',
+		'Luminosity Gaming',
+		'NRG',
+		'M80',
+		'Moist Esports',
+		'Cloud9',
+		'Dignitas',
+		'Shopify Rebellion',
+		'Snowmen',
+	];
+	const round2 = [
+		'G2 Stride',
+		'Moist Esports',
+		'Gen.G',
+		'Shopify Rebellion',
+		'OG',
+		'Dignitas',
+		'Spacestation Gaming',
+		'Luminosity Gaming',
+		'M80',
+		'Incorrect',
+		'Snowmen',
+		'GBuffo',
+		'Cloud9',
+		'Zero2One',
+		'NRG',
+		'Spate Esports',
+	];
+	const round3 = [
+		'Spacestation Gaming',
+		'Shopify Rebellion',
+		'OG',
+		'G2 Stride',
+		'Gen.G',
+		'Cloud9',
+		'Dignitas',
+		'NRG',
+		'Moist Esports',
+		'Snowmen',
+		'Luminosity Gaming',
+		'M80',
+		'Zero2One',
+		'Incorrect',
+		'Spate Esports',
+		'GBuffo',
+	];
+	const round4 = [
+		'Spacestation Gaming',
+		'Dignitas',
+		'OG',
+		'Luminosity Gaming',
+		'Gen.G',
+		'Moist Esports',
+		'NRG',
+		'Incorrect',
+		'M80',
+		'GBuffo',
+		'Snowmen',
+		'Cloud9',
+	];
+	const round5 = ['Moist Esports', 'NRG', 'Luminosity Gaming', 'Cloud9', 'Dignitas', 'M80'];
+	const quarterFinals = [
+		'G2 Stride',
+		'Dignitas',
+		'Spacestation Gaming',
+		'OG',
+		'Shopify Rebellion',
+		'Luminosity Gaming',
+		'Gen.G',
+		'Moist Esports',
+	];
+	const semiFinals = ['G2 Stride', 'OG', 'Shopify Rebellion', 'Moist Esports'];
+	const finals = ['G2 Stride', 'Shopify Rebellion'];
+	cy.visit('/bracket/na6');
+	cy.viewport(1500, 1000);
+	getAndCheck(na6, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
 });
