@@ -9,7 +9,7 @@ article {
 	margin-top: 3em;
 	padding-bottom: 2em;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	max-width: 1400px;
+	max-width: 1600px;
 	margin: auto;
 	gap: 1em;
 	background-color: #121212;
@@ -26,4 +26,3 @@ section {
 br {
 	margin: 1em 0;
 }
-

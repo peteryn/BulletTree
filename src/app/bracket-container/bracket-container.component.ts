@@ -6,6 +6,7 @@ import { SingleEliminationBracketComponent } from '../single-elimination-bracket
 import { Screenshot } from '../screenshot/screenshot.component';
 import { SwissBracketComponent } from '../swiss-bracket/swiss-bracket.component';
 import { Team } from '../team';
+import { TournamentService } from '../tournament.service';
 
 @Component({
 	selector: 'app-bracket-container',
@@ -23,10 +24,13 @@ import { Team } from '../team';
 export class BracketContainerComponent {
 	teamService = inject(TeamsService);
 	teams = this.teamService.getAllTeams();
+	tournamentService = inject(TournamentService);
+	title = '';
 
 	constructor(private route: ActivatedRoute) {
-		const p = this.route.snapshot.paramMap.get('name');
-		this.teams = this.teamService.getTeamsByTournament(p!);
+		const code = this.route.snapshot.paramMap.get('name');
+		this.teams = this.teamService.getTeamsByTournament(code!);
+		this.title = this.tournamentService.getTournamentName(code!);
 	}
 
 	@ViewChild(SingleEliminationBracketComponent) child:

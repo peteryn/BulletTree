@@ -1,13 +1,4 @@
-import {
-	Component,
-	inject,
-	ViewChild,
-	ElementRef,
-	viewChild,
-	Input,
-	Output,
-	EventEmitter,
-} from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { Team } from '../team';
 import { Match } from '../match';
 import { TeamsService } from '../teams.service';
