@@ -294,10 +294,10 @@ it('North American Open Qualifer 6', () => {
 		'Luminosity Gaming',
 		'Gen.G',
 		'Moist Esports',
-		'NRG',
-		'Incorrect',
 		'M80',
 		'GBuffo',
+		'NRG', // this was supposed to be above M80 vs GBF
+		'Incorrect',
 		'Snowmen',
 		'Cloud9',
 	];

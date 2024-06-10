@@ -216,7 +216,7 @@ export class SwissBracketComponent {
 
 		const upperLosersSorted = this.gameDiffSort(upperLosers, 2);
 		const lowerWinnersSorted = this.gameDiffSort(lowerWinners, 2);
-		this.createComplexMatches(
+		this.cartesianProductMatches(
 			r1Andr2Matches,
 			upperLosersSorted,
 			lowerWinnersSorted,
@@ -277,7 +277,7 @@ export class SwissBracketComponent {
 		const stack: any[] = [];
 		let invalidIndexes: number[] = [];
 		let index = 0;
-		while (stack.length < 3) {
+		while (stack.length < round.length) {
 			if (index >= teamCrossClean.length) {
 				let badMatch = stack.pop();
 				invalidIndexes = badMatch.invalidIndexes;
