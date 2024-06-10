@@ -15,7 +15,6 @@ import { SingleEliminationBracketComponent } from '../single-elimination-bracket
 })
 export class SwissBracketComponent {
 	teamsService = inject(TeamsService);
-	// teams = this.teamsService.getAllTeams();
 	@Input() teams: Team[] = [];
 	round1: Match[] = [];
 	round2upper: Match[] = [];
@@ -81,8 +80,20 @@ export class SwissBracketComponent {
 		}
 		if (this.scoreEnteredInAll(this.round1)) {
 			// calculate next swiss round
+			// before calculating next round, we need to blank the scores of the next round
+			this.clearRound('round2Differential', this.round2lower, this.round2upper);
+			this.clearRound(
+				'round3Differential',
+				this.round3upper,
+				this.round3middle,
+				this.round3lower
+			);
+			this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			this.clearRound('round5Differential', this.round5);
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
 			this.calculateRound2(this.round1);
-			this.updateRound3(undefined);
+			// this.updateRound3(undefined);
 		} else {
 			// TODO: clear all later stage matches
 			if (this.round2upper[0].team1 !== undefined) {
@@ -129,8 +140,35 @@ export class SwissBracketComponent {
 			match.team2!.round2Differential = match.team2Score - match.team1Score;
 		}
 		if (this.scoreEnteredInAll(this.round2upper) && this.scoreEnteredInAll(this.round2lower)) {
+			// should blank all future rounds
+			this.clearRound(
+				'round3Differential',
+				this.round3upper,
+				this.round3middle,
+				this.round3lower
+			);
+			this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			this.clearRound('round5Differential', this.round5);
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
 			this.calculateRound3();
 		} else {
+			if (this.round3upper[0].team1 !== undefined) {
+				this.clearRound(
+					'round3Differential',
+					this.round3upper,
+					this.round3middle,
+					this.round3lower
+				);
+			}
+			if (this.round4upper[0].team1 !== undefined) {
+				this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			}
+			if (this.round5[0].team1 !== undefined) {
+				this.clearRound('round5Differential', this.round5);
+			}
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
 		}
 	}
 
@@ -140,11 +178,25 @@ export class SwissBracketComponent {
 			match.team2!.round3Differential = match.team2Score - match.team1Score;
 		}
 		if (
-			this.scoreEnteredInAll(this.round3lower) &&
+			this.scoreEnteredInAll(this.round3upper) &&
 			this.scoreEnteredInAll(this.round3middle) &&
 			this.scoreEnteredInAll(this.round3lower)
 		) {
+			this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			this.clearRound('round5Differential', this.round5);
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
 			this.calculateRound4();
+		} else {
+			console.log('round3 is tied');
+			if (this.round4upper[0].team1 !== undefined) {
+				this.clearRound('round4Differential', this.round4upper, this.round4lower);
+			}
+			if (this.round5[0].team1 !== undefined) {
+				this.clearRound('round5Differential', this.round5);
+			}
+			this.qualified = this.qualified.map(() => undefined);
+			this.top8event.emit(this.qualified);
 		}
 	}
 
@@ -154,7 +206,26 @@ export class SwissBracketComponent {
 			match.team2!.round4Differential = match.team2Score - match.team1Score;
 		}
 		if (this.scoreEnteredInAll(this.round4upper) && this.scoreEnteredInAll(this.round4lower)) {
+			this.clearRound('round5Differential', this.round5);
+			this.qualified[2] = undefined;
+			this.qualified[3] = undefined;
+			this.qualified[4] = undefined;
+			this.qualified[5] = undefined;
+			this.qualified[6] = undefined;
+			this.qualified[7] = undefined;
+			this.top8event.emit(this.qualified);
 			this.calculateRound5();
+		} else {
+			if (this.round5[0].team1 !== undefined) {
+				this.clearRound('round5Differential', this.round5);
+			}
+			this.qualified[2] = undefined;
+			this.qualified[3] = undefined;
+			this.qualified[4] = undefined;
+			this.qualified[5] = undefined;
+			this.qualified[6] = undefined;
+			this.qualified[7] = undefined;
+			this.top8event.emit(this.qualified);
 		}
 	}
 
@@ -169,6 +240,11 @@ export class SwissBracketComponent {
 			this.qualified[5] = winners[0];
 			this.qualified[6] = winners[1];
 			this.qualified[7] = winners[2];
+			this.top8event.emit(this.qualified);
+		} else {
+			this.qualified[5] = undefined;
+			this.qualified[6] = undefined;
+			this.qualified[7] = undefined;
 			this.top8event.emit(this.qualified);
 		}
 	}
@@ -222,6 +298,7 @@ export class SwissBracketComponent {
 		upperWinner = this.gameDiffSort(upperWinner, 3);
 		this.qualified[0] = upperWinner[0];
 		this.qualified[1] = upperWinner[1];
+		this.top8event.emit(this.qualified);
 		upperLoser = this.gameDiffSort(upperLoser, 3);
 
 		let middleWinner: Team[];
@@ -264,7 +341,6 @@ export class SwissBracketComponent {
 		}
 		upperLowerCrossCopy = upperLowerCrossCopy.filter((item: Team[]) => item);
 		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
-		console.log(teamCrossClean);
 		const stack: any[] = [];
 		let invalidIndexes: number[] = [];
 		let index = 0;
@@ -318,6 +394,7 @@ export class SwissBracketComponent {
 		this.qualified[2] = upperWinner[0];
 		this.qualified[3] = upperWinner[1];
 		this.qualified[4] = upperWinner[2];
+		this.top8event.emit(this.qualified);
 		upperLoser = this.gameDiffSort(upperLoser, 4);
 
 		let lowerWinner: Team[];
