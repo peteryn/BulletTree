@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 export const routes: Routes = [
 	// { path: 'swiss', component: SwissBracketComponent },
 	// { path: 'single-elim', component: SingleEliminationBracketComponent },
-	{ path: 'bracket/:name', component: BracketContainerComponent, title: 'bulletTree' },
-	{ path: '', component: HomeComponent, title: 'bulletTree' },
+	{ path: ':name', component: BracketContainerComponent, title: 'bulletTree' },
+	// { path: '', component: HomeComponent, title: 'bulletTree' },
+	{ path: '', redirectTo: '/major2', pathMatch: 'full' },
 ];
