@@ -328,39 +328,62 @@ export class SwissBracketComponent {
 	}
 
 	cartesianProductMatches(allMatches: Match[], upper: Team[], lower: Team[], round: Match[]) {
+		// calculate cross product between upper and lower teams
+		// this represents all possible matchups
 		const cartesianProduct = (a: Team[], b: Team[]) => a.flatMap((x) => b.map((y) => [x, y]));
-		const upperLowerCross = cartesianProduct(upper, lower.reverse());
+		const upperLowerCross: Team[][] = cartesianProduct(upper, lower.reverse());
 		let upperLowerCrossCopy = JSON.parse(JSON.stringify(upperLowerCross));
+
+		// check if upper has team has played lower team already
 		for (let i = 0; i < upperLowerCrossCopy.length; i++) {
 			const t1 = upperLowerCrossCopy[i][0];
 			const t2 = upperLowerCrossCopy[i][1];
 			const alreadyPlayed = this.getTeamsAlreadyPlayed(allMatches, t1.name);
 			if (this.checkIfPlayedAlready(alreadyPlayed, t2.name)) {
+				// if played already, set that possible matchup as null
 				upperLowerCrossCopy[i] = null;
 			}
 		}
+		// get rid of empty entries
 		upperLowerCrossCopy = upperLowerCrossCopy.filter((item: Team[]) => item);
+
+		// make another copy of the possible matchups
 		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
+
 		const stack: any[] = [];
+		// keeps track of what index in teamCrossClean are no longer valid
 		let invalidIndexes: number[] = [];
 		let index = 0;
+		// once we have all our matches, stop looping
 		while (stack.length < round.length) {
+			// if we are out of bounds
 			if (index >= teamCrossClean.length) {
+				// we must have created a bad match AKA took a bad decision and now we need to backtrack
 				let badMatch = stack.pop();
+				// reset invalidIndexes to what it was before the badMatch was made
 				invalidIndexes = badMatch.invalidIndexes;
+				// invalidate the actual badMatch index
 				invalidIndexes.push(badMatch.index);
+				// start at the beginning of teamCrossClean
 				index = 0;
 			}
 
+			// if invalidIndexes contains index
 			if (invalidIndexes.indexOf(index) != -1) {
+				// just skip over the invalid match
 				index++;
 				continue;
 			}
+
+			// clone invalid indexes for the current set of invalidIndexes
 			const invalidIndexesCopy = structuredClone(invalidIndexes);
 			const match = teamCrossClean[index];
 			const team1 = match[0];
 			const team2 = match[1];
+			// for every possible matchup
 			for (let i = 0; i < teamCrossClean.length; i++) {
+				// if any of the names match, push that index to invalidIndexes
+				// if team1 and team2 are the first match, they cannot appear in any other possible matchups
 				if (
 					teamCrossClean[i][0].name === team1.name ||
 					teamCrossClean[i][0].name === team2.name ||
@@ -371,12 +394,15 @@ export class SwissBracketComponent {
 				}
 			}
 
+			// add to stack
 			stack.push({
 				match: match,
 				invalidIndexes: invalidIndexesCopy,
 				index: index,
 			});
 		}
+
+		// put matches in the stack
 		for (let i = 0; i < round.length; i++) {
 			const t1 = stack[i].match[0];
 			const t2 = stack[i].match[1];
