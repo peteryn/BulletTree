@@ -133,7 +133,7 @@ it('North American Open Qualifer 4', () => {
 	];
 	const semiFinals = ['G2 Stride', 'Spacestation Gaming', 'Snowmen', 'Gen.G'];
 	const finals = ['G2 Stride', 'Gen.G'];
-	cy.visit('/bracket/na4');
+	cy.visit('/na4');
 	cy.viewport(1500, 1000);
 	getAndCheck(na4, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
 });
@@ -227,7 +227,7 @@ it('North American Open Qualifer 5', () => {
 	];
 	const semiFinals = ['Spacestation Gaming', 'OG', 'Cloud9', 'G2 Stride'];
 	const finals = ['Spacestation Gaming', 'G2 Stride'];
-	cy.visit('/bracket/na5');
+	cy.visit('/na5');
 	cy.viewport(1500, 1000);
 	getAndCheck(na5, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
 });
@@ -314,7 +314,7 @@ it('North American Open Qualifer 6', () => {
 	];
 	const semiFinals = ['G2 Stride', 'OG', 'Shopify Rebellion', 'Moist Esports'];
 	const finals = ['G2 Stride', 'Shopify Rebellion'];
-	cy.visit('/bracket/na6');
+	cy.visit('/na6');
 	cy.viewport(1500, 1000);
 	getAndCheck(na6, round1, round2, round3, round4, round5, quarterFinals, semiFinals, finals);
 });

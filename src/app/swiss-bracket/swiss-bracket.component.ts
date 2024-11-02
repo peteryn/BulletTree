@@ -321,17 +321,45 @@ export class SwissBracketComponent {
 			.concat(this.round3upper);
 
 		upperLoser.push(middleWinner.splice(0, 1)[0]);
-		this.cartesianProductMatches(r1r2r3matches, upperLoser, middleWinner, this.round4upper);
+		this.cartesianProductMatches(
+			r1r2r3matches,
+			upperLoser,
+			middleWinner,
+			this.round4upper,
+			false
+		);
 
 		lowerWinner = middleLoser.splice(middleLoser.length - 1, 1).concat(lowerWinner);
-		this.cartesianProductMatches(r1r2r3matches, middleLoser, lowerWinner, this.round4lower);
+		this.cartesianProductMatches(r1r2r3matches, middleLoser, lowerWinner, this.round4lower, true);
 	}
 
-	cartesianProductMatches(allMatches: Match[], upper: Team[], lower: Team[], round: Match[]) {
+	cartesianProductMatches(
+		allMatches: Match[],
+		upper: Team[],
+		lower: Team[],
+		round: Match[],
+		debug?: boolean
+	) {
 		// calculate cross product between upper and lower teams
 		// this represents all possible matchups
+		if (debug) {
+			console.log('***INIT***');
+			for (let blank of upper) {
+				console.log(blank.initialSeed);
+			}
+			for (let blank of lower) {
+				console.log(blank.initialSeed);
+			}
+			console.log('**********');
+		}
+
 		const cartesianProduct = (a: Team[], b: Team[]) => a.flatMap((x) => b.map((y) => [x, y]));
 		const upperLowerCross: Team[][] = cartesianProduct(upper, lower.reverse());
+		if (debug) {
+			for (const blank of upperLowerCross) {
+				console.log(`(${blank[0].initialSeed}, ${blank[1].initialSeed})`);
+			}
+		}
 		let upperLowerCrossCopy = JSON.parse(JSON.stringify(upperLowerCross));
 
 		// check if upper has team has played lower team already
@@ -349,6 +377,12 @@ export class SwissBracketComponent {
 
 		// make another copy of the possible matchups
 		let teamCrossClean = JSON.parse(JSON.stringify(upperLowerCrossCopy));
+		if (debug) {
+			console.log(teamCrossClean.length);
+			for (let blank of teamCrossClean) {
+				console.log(`(${blank[0].initialSeed}, ${blank[1].initialSeed})\n`);
+			}
+		}
 
 		const stack: any[] = [];
 		// keeps track of what index in teamCrossClean are no longer valid
